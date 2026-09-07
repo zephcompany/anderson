@@ -1,9 +1,12 @@
-name: Melhorias de interação
+name: Melhorias premium
 
 on:
   workflow_dispatch:
   push:
     paths:
+      - 'patch_site.py'
+      - 'enhancements.css'
+      - 'enhancements.js'
       - '.github/workflows/enhance-interactions.yml'
 
 permissions:
@@ -13,249 +16,19 @@ jobs:
   aplicar:
     runs-on: ubuntu-latest
     steps:
-      - name: Baixar repositório
+      - name: Baixar repositorio
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Aplicar melhorias no index
-        shell: bash
-        run: |
-          python3 <<'PY'
-          from pathlib import Path
-          import re
+      - name: Aplicar patch
+        run: python3 patch_site.py
 
-          p = Path('index.html')
-          s = p.read_text(encoding='utf-8')
-
-          # Limpa versão anterior para ser idempotente
-          s = re.sub(r'\n?/\* === ZEPH PREMIUM ENHANCEMENTS START === \*/.*?/\* === ZEPH PREMIUM ENHANCEMENTS END === \*/\n?', '\n', s, flags=re.S)
-          s = re.sub(r'\n?<!-- === ZEPH PREMIUM SCRIPT START === -->.*?<!-- === ZEPH PREMIUM SCRIPT END === -->\n?', '\n', s, flags=re.S)
-
-          # Social proof com imagens reais dos projetos
-          s = s.replace('src="assets/avatar.png?v=20260907-0247"', 'src="assets/projeto-1.png?v=20260907-0247"', 1)
-          s = s.replace('src="assets/avatar.png?v=20260907-0247"', 'src="assets/projeto-2.png?v=20260907-0247"', 1)
-          s = s.replace('src="assets/avatar.png?v=20260907-0247"', 'src="assets/projeto-3.png?v=20260907-0247"', 1)
-          s = s.replace('src="assets/avatar.png?v=20260907-0247"', 'src="assets/projeto-4.png?v=20260907-0247"', 1)
-          s = s.replace('src="assets/avatar.png?v=20260907-0247"', 'src="assets/galeria-01.png?v=20260907-0247"', 1)
-          s = s.replace('<strong>Mais de 100 pessoas já entraram</strong> e transformaram constância em regra.', '<strong>Projetos entregues no Brasil e no exterior.</strong> Arquitetura autoral, do conceito à obra.')
-
-          css = r'''
-/* === ZEPH PREMIUM ENHANCEMENTS START === */
-
-/* cursor premium */
-@media (pointer:fine){
-  body, a, button { cursor:none !important; }
-  .zeph-cursor{
-    position:fixed;left:0;top:0;width:18px;height:18px;border-radius:50%;
-    background:#fff;mix-blend-mode:difference;pointer-events:none;z-index:99999;
-    transform:translate(-50%,-50%);will-change:transform,width,height;
-    transition:width .25s var(--ease),height .25s var(--ease),opacity .25s ease;
-  }
-  .zeph-cursor.is-hover{width:46px;height:46px}
-}
-
-/* menu com pill deslizante inspirado no JSON enviado */
-.nav__list{position:relative;isolation:isolate;overflow:visible}
-.nav__link{position:relative;z-index:2;background:transparent!important}
-.nav-highlight{
-  position:absolute;left:0;top:0;border-radius:999px;z-index:1;pointer-events:none;
-  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.10);
-  box-shadow:0 8px 28px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.08);
-  transition:transform .32s cubic-bezier(.2,.75,.25,1),width .32s cubic-bezier(.2,.75,.25,1),height .32s cubic-bezier(.2,.75,.25,1),opacity .2s ease;
-  opacity:0;will-change:transform,width,height;
-}
-.nav-highlight.is-visible{opacity:1}
-
-/* botão com gradiente em movimento + seta */
-.btn{overflow:hidden;isolation:isolate;transform:translateZ(0)}
-.btn::before{
-  background:linear-gradient(110deg,#fff 0%,#d8d8d8 22%,#8f8f8f 44%,#f8f8f8 62%,#535353 100%)!important;
-  background-size:260% 100%!important;background-position:0% 50%;
-  transition:background-position .65s cubic-bezier(.2,.75,.25,1),box-shadow .45s ease,filter .45s ease!important;
-}
-.btn::after{
-  content:'↗';font-size:1.1em;line-height:1;display:inline-block;color:#000;
-  transform:translate(-6px,8px) rotate(-20deg);opacity:0;
-  transition:transform .4s cubic-bezier(.2,.8,.2,1),opacity .3s ease;
-}
-.btn:hover{transform:translateY(-3px) scale(1.012)!important}
-.btn:hover::before{background-position:100% 50%!important;box-shadow:0 16px 48px rgba(255,255,255,.18)!important;filter:brightness(1.06)}
-.btn:hover::after{transform:translate(0,0) rotate(0);opacity:1}
-.btn .btn__icon{transition:transform .45s cubic-bezier(.2,.8,.2,1),opacity .3s ease}
-.btn:hover .btn__icon{transform:translateX(8px) rotate(-8deg)}
-.link-arrow{position:relative;overflow:hidden}
-.link-arrow::after{content:'';position:absolute;left:0;bottom:0;width:100%;height:1px;background:#fff;transform:translateX(-105%);transition:transform .35s ease}
-.link-arrow:hover::after{transform:translateX(0)}
-
-/* social proof com projetos */
-.proof__avatars{padding-right:8px}
-.proof__avatars img{
-  width:46px;height:46px;object-fit:cover;filter:saturate(.8) brightness(.9);
-  transition:transform .42s cubic-bezier(.2,.8,.2,1),filter .35s ease,opacity .35s ease,margin .35s ease;
-}
-.proof__avatars:hover img{filter:blur(2px) brightness(.55);opacity:.68}
-.proof__avatars img:hover{transform:translateY(-8px) scale(1.18);filter:none;opacity:1;z-index:5;margin-right:2px}
-
-/* processo horizontal preso ao scroll */
-.processo{overflow:clip}
-.processo .marquee{overflow:hidden!important;mask-image:none!important}
-.processo .marquee__track{animation:none!important;display:flex!important;width:max-content!important;will-change:transform}
-.processo .marquee__group{display:flex!important;gap:18px!important;width:max-content!important;padding-inline:var(--gutter)}
-.processo .shot{flex:0 0 clamp(280px,38vw,560px)!important;height:clamp(300px,48vw,640px)!important;border-radius:24px!important;overflow:hidden!important;border:1px solid rgba(255,255,255,.12)!important;background:#0a0a0a}
-.processo .shot img{width:100%!important;height:100%!important;object-fit:cover!important;transition:transform .7s cubic-bezier(.2,.8,.2,1),filter .5s ease!important}
-.processo .shot:hover img{transform:scale(1.035);filter:brightness(1.08)}
-.zeph-horizontal-wrap{position:relative}
-.zeph-timeline{width:min(1284px,calc(100% - 2*var(--gutter)));margin:34px auto 0;display:flex;align-items:center;gap:14px;color:rgba(255,255,255,.5);font-size:12px;letter-spacing:.16em;text-transform:uppercase}
-.zeph-timeline__line{position:relative;height:2px;flex:1;background:rgba(255,255,255,.14);overflow:hidden;border-radius:999px}
-.zeph-timeline__progress{position:absolute;inset:0 auto 0 0;width:0;background:#fff;border-radius:999px;box-shadow:0 0 14px rgba(255,255,255,.5)}
-
-/* entradas premium */
-.reveal{opacity:0;transform:translateY(42px) scale(.985);filter:blur(8px);transition:none!important}
-.reveal.is-in{opacity:1;transform:none;filter:none}
-
-@media(max-width:900px){
-  .zeph-cursor{display:none!important}
-  body,a,button{cursor:auto!important}
-  .processo .shot{flex-basis:78vw!important}
-}
-/* === ZEPH PREMIUM ENHANCEMENTS END === */
-'''
-
-          js = r'''
-<!-- === ZEPH PREMIUM SCRIPT START === -->
-<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-<script>
-(() => {
-  const ready = (fn) => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn();
-  ready(() => {
-    /* Lenis */
-    if (window.Lenis) {
-      const lenis = new Lenis({duration:1.15,smoothWheel:true,wheelMultiplier:.9,touchMultiplier:1.15});
-      window.__lenis = lenis;
-      const raf = t => { lenis.raf(t); requestAnimationFrame(raf); };
-      requestAnimationFrame(raf);
-      if (window.ScrollTrigger) lenis.on('scroll', ScrollTrigger.update);
-      document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
-        const el = document.querySelector(a.getAttribute('href'));
-        if (el) { e.preventDefault(); lenis.scrollTo(el,{offset:-110,duration:1.1}); }
-      }));
-    }
-
-    /* Cursor */
-    if (matchMedia('(pointer:fine)').matches) {
-      const c=document.createElement('div'); c.className='zeph-cursor'; document.body.appendChild(c);
-      let x=innerWidth/2,y=innerHeight/2,cx=x,cy=y;
-      addEventListener('mousemove',e=>{x=e.clientX;y=e.clientY});
-      const tick=()=>{cx+=(x-cx)*.18;cy+=(y-cy)*.18;c.style.transform=`translate(${cx}px,${cy}px) translate(-50%,-50%)`;requestAnimationFrame(tick)};tick();
-      document.querySelectorAll('a,button,.shot,.card').forEach(el=>{
-        el.addEventListener('mouseenter',()=>c.classList.add('is-hover'));
-        el.addEventListener('mouseleave',()=>c.classList.remove('is-hover'));
-      });
-    }
-
-    /* Menu highlight deslizante */
-    const list=document.querySelector('.nav__list');
-    if(list){
-      const links=[...list.querySelectorAll('.nav__link')];
-      const hi=document.createElement('span'); hi.className='nav-highlight'; list.appendChild(hi);
-      let active=list.querySelector('.nav__link.is-active')||links[0];
-      const move=el=>{if(!el)return;const r=el.getBoundingClientRect(),m=list.getBoundingClientRect();hi.style.width=r.width+'px';hi.style.height=r.height+'px';hi.style.transform=`translate(${r.left-m.left}px,${r.top-m.top}px)`;hi.classList.add('is-visible')};
-      move(active);
-      links.forEach(a=>{
-        a.addEventListener('mouseenter',()=>move(a));
-        a.addEventListener('click',()=>{links.forEach(x=>x.classList.remove('is-active'));a.classList.add('is-active');active=a;move(active)});
-      });
-      list.addEventListener('mouseleave',()=>move(active));
-      addEventListener('resize',()=>move(active));
-      const sections=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
-      const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){const a=links.find(x=>x.getAttribute('href')==='#'+e.target.id);if(a){links.forEach(x=>x.classList.remove('is-active'));a.classList.add('is-active');active=a;move(a)}}}),{rootMargin:'-42% 0px -50% 0px',threshold:0});
-      sections.forEach(s=>io.observe(s));
-    }
-
-    /* GSAP reveal */
-    if(window.gsap&&window.ScrollTrigger){
-      gsap.registerPlugin(ScrollTrigger);
-      document.querySelectorAll('.reveal').forEach((el,i)=>{
-        gsap.fromTo(el,{autoAlpha:0,y:44,filter:'blur(8px)',scale:.985},{autoAlpha:1,y:0,filter:'blur(0px)',scale:1,duration:.95,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 88%',once:true}});
-      });
-      document.querySelectorAll('h1,h2,.eyebrow').forEach(el=>{
-        if(el.closest('.reveal')) return;
-        gsap.from(el,{autoAlpha:0,y:28,filter:'blur(6px)',duration:.85,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 90%',once:true}})
-      });
-
-      /* horizontal pin no processo */
-      const proc=document.querySelector('.processo');
-      const marquee=proc?.querySelector('.marquee');
-      const track=proc?.querySelector('.marquee__track');
-      if(proc&&marquee&&track){
-        const tl=document.createElement('div');tl.className='zeph-timeline';tl.innerHTML='<span>Projetos</span><div class="zeph-timeline__line"><div class="zeph-timeline__progress"></div></div><span>Brasil + exterior</span>';
-        marquee.insertAdjacentElement('afterend',tl);
-        const progress=tl.querySelector('.zeph-timeline__progress');
-        const getDist=()=>Math.max(0,track.scrollWidth-innerWidth+80);
-        const tween=gsap.to(track,{x:()=>-getDist(),ease:'none',scrollTrigger:{trigger:marquee,start:'center center',end:()=>'+='+(getDist()+innerHeight*.55),scrub:1,pin:true,anticipatePin:1,invalidateOnRefresh:true,onUpdate:self=>progress.style.width=(self.progress*100)+'%'}});
-        ScrollTrigger.addEventListener('refreshInit',()=>gsap.set(track,{x:0}));
-      }
-    }
-
-    /* idioma PT / EN */
-    const dict = {
-      'Home':'Home','Sobre':'About','Projetos':'Projects','Processo':'Process','Depoimentos':'Testimonials','Contato':'Contact',
-      'Quero um projeto exclusivo':'I want an exclusive project','Agendar uma demonstração':'Schedule a consultation',
-      '// SOBRE MIM':'// ABOUT ME','O estúdio':'The studio','// PROJETOS':'// PROJECTS',
-      'Projetos selecionados':'Selected projects','// DO PRIMEIRO TRAÇO AO CANTEIRO DE OBRA':'// FROM FIRST SKETCH TO CONSTRUCTION',
-      'Um processo claro, perto ou longe.':'A clear process, near or far.',
-      'Atendimento em todo o Brasil.':'Service throughout Brazil.',
-      'Confiança à distância.':'Trust from anywhere.',
-      '// evite prejuízo':'// avoid waste'
-    };
-    const original=new WeakMap();
-    const translatable=[...document.querySelectorAll('a,button,h1,h2,h3,p,.eyebrow,.stat__label,.proof__text')];
-    translatable.forEach(el=>original.set(el,el.innerHTML));
-    const applyLang=lang=>{
-      document.documentElement.lang=lang==='en'?'en':'pt-BR';
-      translatable.forEach(el=>{
-        if(lang==='pt'){el.innerHTML=original.get(el);return;}
-        let html=original.get(el);
-        Object.entries(dict).forEach(([pt,en])=>{html=html.split(pt).join(en)});
-        html=html
-          .replace('Arquitetura autoral para quem não quer morar em um projeto repetido.','Signature architecture for those who refuse a repeated design.')
-          .replace('Do conceito à obra, cada residência nasce de uma ideia nova.','From concept to construction, every residence begins with a new idea.')
-          .replace('Projetos entregues no Brasil e no exterior.','Projects delivered in Brazil and abroad.')
-          .replace('Arquitetura autoral, do conceito à obra.','Signature architecture, from concept to construction.')
-          .replace('O processo é o mesmo, perto ou longe: reuniões marcadas, etapas claras e tudo registrado em contrato.','The process is the same, near or far: scheduled meetings, clear stages and everything documented in contract.')
-          .replace('Um bom projeto não é custo.','A great project is not a cost.')
-          .replace('É o que <em>evita desperdício</em> na obra e valoriza cada metro construído.','It <em>prevents waste</em> during construction and adds value to every built square meter.');
-        el.innerHTML=html;
-      });
-      document.querySelectorAll('.lang__btn').forEach(b=>{const on=b.dataset.lang===lang;b.classList.toggle('is-active',on);b.setAttribute('aria-pressed',on?'true':'false')});
-      localStorage.setItem('az-lang',lang);
-    };
-    document.querySelectorAll('.lang__btn').forEach(b=>b.addEventListener('click',()=>applyLang(b.dataset.lang)));
-    applyLang(localStorage.getItem('az-lang')||'pt');
-  });
-})();
-</script>
-<!-- === ZEPH PREMIUM SCRIPT END === -->
-'''
-
-          # Injeta CSS antes de </style> e JS antes de </body>
-          if '</style>' in s:
-              s = s.replace('</style>', css + '\n</style>', 1)
-          else:
-              s = s.replace('</head>', '<style>'+css+'</style>\n</head>', 1)
-
-          s = s.replace('</body>', js + '\n</body>', 1)
-          p.write_text(s,encoding='utf-8')
-          PY
-
-      - name: Commitar melhorias
+      - name: Commitar alteracoes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m "Melhora interações, idioma e scroll horizontal"
+          git commit -m "Aplica interacoes premium no site"
           git push
