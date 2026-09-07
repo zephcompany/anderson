@@ -3,7 +3,7 @@ import re
 
 p=Path('index.html')
 s=p.read_text(encoding='utf-8')
-ver='20260907-0323'
+ver='20260907-0325'
 
 # quebra cache do CSS/JS premium
 s=re.sub(r'<link rel="stylesheet" href="enhancements\.css\?v=[^"]+">\n?','',s)
