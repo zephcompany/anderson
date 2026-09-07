@@ -1,3 +1,4 @@
+html{scroll-behavior:auto!important}
 /* Projeto: reaproveita exatamente a linguagem visual do header da home */
 :root{--gutter:clamp(20px,5vw,40px);--radius-sm:16px;--ease:cubic-bezier(.22,.61,.36,1);--btn-grad:linear-gradient(144deg,#fff 0%,#a7a7a7 45%,#3b3b3b 100%);--btn-grad-hover:linear-gradient(144deg,#fff 0%,#d4d4d4 55%,#6d6d6d 100%)}
 .header{position:fixed!important;top:clamp(14px,2.4vw,28px)!important;left:0!important;right:0!important;z-index:80!important;padding-inline:var(--gutter)!important;transform:none!important;width:auto!important;transition:transform .45s var(--ease)!important}
