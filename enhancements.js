@@ -14,7 +14,7 @@
 
     let lenis=null;
     if(window.Lenis){
-      lenis=new Lenis({lerp:0.075,smoothWheel:true,wheelMultiplier:0.82,touchMultiplier:1,syncTouch:false,infinite:false,overscroll:true});
+      lenis=new Lenis({lerp:0.085,smoothWheel:true,wheelMultiplier:0.9,touchMultiplier:1,syncTouch:false,infinite:false,overscroll:true});
       window.__lenis=lenis;
       if(window.gsap){gsap.ticker.add(time=>lenis.raf(time*1000));gsap.ticker.lagSmoothing(0)}
       else{const raf=time=>{lenis.raf(time);requestAnimationFrame(raf)};requestAnimationFrame(raf)}
@@ -22,7 +22,7 @@
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
-      const href=a.getAttribute('href');if(!href||href==='#')return;const el=document.querySelector(href);if(el){e.preventDefault();if(lenis)lenis.scrollTo(el,{offset:-110,duration:1.15});else window.scrollTo({top:el.getBoundingClientRect().top+window.scrollY-110,behavior:'smooth'})}
+      const href=a.getAttribute('href');if(!href||href==='#')return;const el=document.querySelector(href);if(el){e.preventDefault();if(lenis)lenis.scrollTo(el,{offset:-110,duration:1.05});else window.scrollTo({top:el.getBoundingClientRect().top+window.scrollY-110,behavior:'smooth'})}
     }));
 
     if(matchMedia('(pointer:fine)').matches){
@@ -48,8 +48,9 @@
         const tl=document.createElement('div');tl.className='zeph-timeline';tl.innerHTML='<span>Projetos</span><div class="zeph-timeline__line"><div class="zeph-timeline__progress"></div></div><span>Brasil + exterior</span>';
         marquee.appendChild(tl);
         const progress=tl.querySelector('.zeph-timeline__progress');
-        const dist=()=>Math.max(0,track.scrollWidth-innerWidth+80);
-        gsap.to(track,{x:()=>-dist(),ease:'none',scrollTrigger:{trigger:marquee,start:'center center',end:()=>'+='+(dist()+innerHeight*.18),scrub:.4,pin:true,anticipatePin:1,invalidateOnRefresh:true,onUpdate:self=>{progress.style.width=(self.progress*100)+'%'}}});
+        const dist=()=>Math.max(0,Math.min(track.scrollWidth-innerWidth+80,innerWidth*1.35));
+        gsap.set(track,{x:0});
+        gsap.to(track,{x:()=>-dist(),ease:'none',scrollTrigger:{trigger:marquee,start:'top 82%',end:'bottom 18%',scrub:.55,invalidateOnRefresh:true,onUpdate:self=>{progress.style.width=(self.progress*100)+'%'}}});
       }
       requestAnimationFrame(()=>ScrollTrigger.refresh());
     }
