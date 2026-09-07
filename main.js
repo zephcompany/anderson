@@ -155,12 +155,20 @@
     });
 
     /* arrastar com mouse / dedo */
-    var down = false, startX = 0, delta = 0;
+    var down = false, startX = 0, delta = 0, dragged = false;
 
-    function start(x) { down = true; startX = x; delta = 0; viewport.classList.add('is-dragging'); track.classList.add('no-anim'); }
+    function start(x) {
+      down = true;
+      startX = x;
+      delta = 0;
+      dragged = false;
+      viewport.classList.add('is-dragging');
+      track.classList.add('no-anim');
+    }
     function move(x) {
       if (!down) return;
       delta = x - startX;
+      if (Math.abs(delta) > 6) dragged = true;
       track.style.transform = 'translate3d(' + (-index * step + delta) + 'px,0,0)';
     }
     function end() {
@@ -170,19 +178,29 @@
       track.classList.remove('no-anim');
       if (Math.abs(delta) > step * 0.18) go(index + (delta < 0 ? 1 : -1));
       else apply(true);
+      setTimeout(function () { dragged = false; delta = 0; }, 0);
     }
 
-    viewport.addEventListener('mousedown', function (e) { e.preventDefault(); start(e.clientX); });
+    viewport.addEventListener('mousedown', function (e) {
+      if (e.target.closest('a,button')) return;
+      e.preventDefault();
+      start(e.clientX);
+    });
     window.addEventListener('mousemove', function (e) { move(e.clientX); });
     window.addEventListener('mouseup', end);
 
-    viewport.addEventListener('touchstart', function (e) { start(e.touches[0].clientX); }, { passive: true });
+    viewport.addEventListener('touchstart', function (e) {
+      if (e.target.closest('a,button')) return;
+      start(e.touches[0].clientX);
+    }, { passive: true });
     viewport.addEventListener('touchmove',  function (e) { move(e.touches[0].clientX); }, { passive: true });
     viewport.addEventListener('touchend', end);
 
-    /* não deixa o clique disparar quando foi arrasto */
+    /* bloqueia o clique somente quando houve arraste de verdade */
     $$('a', track).forEach(function (a) {
-      a.addEventListener('click', function (e) { if (Math.abs(delta) > 6) e.preventDefault(); });
+      a.addEventListener('click', function (e) {
+        if (dragged) e.preventDefault();
+      });
     });
 
     measure();
