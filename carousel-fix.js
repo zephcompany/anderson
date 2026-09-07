@@ -1,8 +1,66 @@
 (() => {
   const ready = fn => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn();
+
   ready(() => {
+    /* =========================================================
+       HOTFIX GLOBAL
+       1) links "Ver projeto" sempre clicáveis
+       2) troca PT/EN volta suavemente para a primeira dobra
+       ========================================================= */
+
+    const style = document.createElement('style');
+    style.textContent = `
+      html.az-lang-changing main,
+      html.az-lang-changing .header{
+        transition:opacity .32s ease, filter .32s ease!important;
+        opacity:.72;
+        filter:blur(1.5px);
+      }
+      #carousel-projetos .link-arrow{
+        position:relative!important;
+        z-index:20!important;
+        pointer-events:auto!important;
+        overflow:visible!important;
+      }
+      #carousel-projetos .card__info{
+        position:relative!important;
+        z-index:10!important;
+        overflow:visible!important;
+      }
+    `;
+    document.head.appendChild(style);
+
+    /* ---------------------------------------------------------
+       Troca de idioma: fade curto + scroll suave para o topo
+       Funciona junto do i18n existente em enhancements.js.
+       --------------------------------------------------------- */
+    document.querySelectorAll('.lang__btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.documentElement.classList.add('az-lang-changing');
+
+        const hero = document.querySelector('#topo');
+        const goTop = () => {
+          if (window.__lenis && hero) {
+            window.__lenis.scrollTo(hero, {
+              offset: 0,
+              duration: 1.35,
+              easing: t => 1 - Math.pow(1 - t, 4)
+            });
+          } else if (hero) {
+            hero.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        };
+
+        requestAnimationFrame(goTop);
+        setTimeout(() => document.documentElement.classList.remove('az-lang-changing'), 360);
+      }, true);
+    });
+
     const root = document.querySelector('#carousel-projetos');
     if (!root) return;
+
     const viewport = root.querySelector('.carousel__viewport');
     const track = root.querySelector('.carousel__track');
     const cards = [...root.querySelectorAll('.card')];
@@ -11,7 +69,6 @@
     const dots = root.querySelector('.dots');
     if (!viewport || !track || !cards.length) return;
 
-    // neutraliza o carrossel antigo baseado em transform sem remover a estrutura visual
     track.style.transform = 'none';
 
     const padLeft = () => parseFloat(getComputedStyle(viewport).paddingLeft) || 0;
@@ -24,8 +81,7 @@
       i = Math.max(0, Math.min(i, cards.length - 1));
       const card = cards[i];
       const left = card.offsetLeft - padLeft();
-      const last = i === cards.length - 1;
-      if (last) {
+      if (i === cards.length - 1) {
         const rightAligned = card.offsetLeft + card.offsetWidth - viewport.clientWidth + padRight();
         return Math.max(0, Math.min(maxScroll(), rightAligned));
       }
@@ -35,7 +91,7 @@
     function paint() {
       if (prev) prev.disabled = false;
       if (next) next.disabled = false;
-      if (dots) [...dots.querySelectorAll('button')].forEach((d,i)=>d.classList.toggle('is-active', i === index));
+      if (dots) [...dots.querySelectorAll('button')].forEach((d,i) => d.classList.toggle('is-active', i === index));
     }
 
     function go(i, smooth = true) {
@@ -46,7 +102,6 @@
       paint();
     }
 
-    // captura antes dos listeners antigos e transforma as setas em loop infinito
     root.addEventListener('click', e => {
       const btn = e.target.closest('[data-dir]');
       if (!btn || !root.contains(btn)) return;
@@ -69,18 +124,36 @@
       }, true);
     }
 
-    let down = false, sx = 0, sl = 0, moved = false;
+    let down = false;
+    let sx = 0;
+    let sl = 0;
+    let moved = false;
+    let pressedLink = null;
+
     viewport.addEventListener('pointerdown', e => {
       if (e.pointerType === 'mouse' && e.button !== 0) return;
-      down = true; moved = false; sx = e.clientX; sl = viewport.scrollLeft;
+
+      pressedLink = e.target.closest('a.link-arrow');
+      if (pressedLink) {
+        down = false;
+        moved = false;
+        return;
+      }
+
+      down = true;
+      moved = false;
+      sx = e.clientX;
+      sl = viewport.scrollLeft;
       viewport.setPointerCapture?.(e.pointerId);
     }, true);
+
     viewport.addEventListener('pointermove', e => {
       if (!down) return;
       const dx = e.clientX - sx;
       if (Math.abs(dx) > 4) moved = true;
       viewport.scrollLeft = sl - dx;
     }, true);
+
     const finish = () => {
       if (!down) return;
       down = false;
@@ -93,20 +166,34 @@
       });
       go(best);
     };
+
     viewport.addEventListener('pointerup', finish, true);
     viewport.addEventListener('pointercancel', finish, true);
 
-    viewport.addEventListener('click', e => {
-      if (moved && e.target.closest('a')) {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-      }
+    /* O listener antigo do carrossel usa preventDefault no mousedown.
+       Bloqueamos esse listener somente quando o alvo é "Ver projeto". */
+    viewport.addEventListener('mousedown', e => {
+      if (e.target.closest('a.link-arrow')) e.stopImmediatePropagation();
     }, true);
 
-    // garante que o último card realmente entre inteiro após resize/font/image load
+    viewport.addEventListener('touchstart', e => {
+      if (e.target.closest('a.link-arrow')) e.stopImmediatePropagation();
+    }, { capture:true, passive:true });
+
+    /* Navegação explícita para não depender do comportamento nativo
+       que o drag antigo podia cancelar. */
+    root.addEventListener('click', e => {
+      const link = e.target.closest('a.link-arrow');
+      if (!link || !root.contains(link)) return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      const href = link.getAttribute('href');
+      if (href) window.location.assign(href);
+    }, true);
+
     const refresh = () => go(index, false);
-    addEventListener('resize', refresh, {passive:true});
-    addEventListener('load', refresh, {once:true});
+    addEventListener('resize', refresh, { passive:true });
+    addEventListener('load', refresh, { once:true });
     setTimeout(refresh, 400);
     paint();
   });
