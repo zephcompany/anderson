@@ -580,7 +580,14 @@ h2 em{font-size:1.12em}
 }
 
 </style>
-<link rel="stylesheet" href="enhancements.css?v=20260907-0318">
+<style id="zeph-spacing-fix">
+.sec-head--center{gap:14px!important}
+.sec-head--center .eyebrow{margin-bottom:0!important}
+.depoimentos .sec-head,.faq .sec-head{gap:14px!important}
+.depoimentos .sec-head .eyebrow,.faq .sec-head .eyebrow{margin-bottom:0!important}
+@media(max-width:900px){.sec-head--center,.depoimentos .sec-head,.faq .sec-head{gap:10px!important}}
+</style>
+<link rel="stylesheet" href="enhancements.css?v=20260907-0319">
 </head>
 <body>
 
@@ -1278,6 +1285,6 @@ h2 em{font-size:1.12em}
 })();
 
 </script>
-<script src="enhancements.js?v=20260907-0318" defer></script>
+<script src="enhancements.js?v=20260907-0319" defer></script>
 </body>
 </html>
