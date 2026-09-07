@@ -3,7 +3,7 @@ import re
 
 p=Path('index.html')
 s=p.read_text(encoding='utf-8')
-ver='20260907-0325'
+ver='20260907-0330'
 
 # quebra cache do CSS/JS premium
 s=re.sub(r'<link rel="stylesheet" href="enhancements\.css\?v=[^"]+">\n?','',s)
@@ -27,5 +27,9 @@ for new in repls:
 # texto final da prova social
 s=s.replace('<strong>Mais de 100 pessoas já entraram</strong> e transformaram constância em regra.','+ de 50 <strong>Projetos entregues no Brasil e no exterior.</strong>')
 s=s.replace('<strong>Projetos entregues no Brasil e no exterior.</strong> Arquitetura autoral, do conceito à obra.','+ de 50 <strong>Projetos entregues no Brasil e no exterior.</strong>')
+
+# links individuais dos quatro projetos
+for slug in ['rf-house','marea-house','casa-florenca','villa-vrabel']:
+    s=s.replace('href="projeto.html">Ver projeto',f'href="projeto.html?slug={slug}">Ver projeto',1)
 
 p.write_text(s,encoding='utf-8')
