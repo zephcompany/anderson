@@ -15,16 +15,24 @@
     let lenis=null;
     if(window.Lenis){
       lenis=new Lenis({
-        lerp:0.11,
+        lerp:0.075,
         smoothWheel:true,
-        wheelMultiplier:0.9,
+        wheelMultiplier:0.82,
         touchMultiplier:1,
         syncTouch:false,
-        infinite:false
+        infinite:false,
+        overscroll:true
       });
       window.__lenis=lenis;
-      const raf=time=>{lenis.raf(time);requestAnimationFrame(raf)};
-      requestAnimationFrame(raf);
+
+      if(window.gsap){
+        gsap.ticker.add(time=>lenis.raf(time*1000));
+        gsap.ticker.lagSmoothing(0);
+      }else{
+        const raf=time=>{lenis.raf(time);requestAnimationFrame(raf)};
+        requestAnimationFrame(raf);
+      }
+
       if(window.ScrollTrigger) lenis.on('scroll',ScrollTrigger.update);
     }
 
@@ -34,7 +42,7 @@
       const el=document.querySelector(href);
       if(el){
         e.preventDefault();
-        if(lenis) lenis.scrollTo(el,{offset:-110,duration:1.05});
+        if(lenis) lenis.scrollTo(el,{offset:-110,duration:1.15});
         else window.scrollTo({top:el.getBoundingClientRect().top+window.scrollY-110,behavior:'smooth'});
       }
     }));
@@ -65,9 +73,7 @@
 
       document.querySelectorAll('.reveal').forEach(el=>gsap.fromTo(el,{autoAlpha:0,y:36,filter:'blur(6px)',scale:.99},{autoAlpha:1,y:0,filter:'blur(0px)',scale:1,duration:.82,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 90%',once:true}}));
 
-      const extraSelectors=[
-        '.ticker', '.sobre__media', '.sobre__text', '.stat', '.sec-head', '.project-card', '.project', '.step', '.processo__note', '.reel', '.cta__card', '.faq__item', '.footer__inner', '.footer__bottom'
-      ];
+      const extraSelectors=['.ticker','.sobre__media','.sobre__text','.stat','.sec-head','.project-card','.project','.step','.processo__note','.reel','.cta__card','.faq__item','.footer__inner','.footer__bottom'];
       const animated=new Set();
       extraSelectors.forEach(sel=>document.querySelectorAll(sel).forEach((el,i)=>{
         if(animated.has(el)||el.classList.contains('reveal')) return;
