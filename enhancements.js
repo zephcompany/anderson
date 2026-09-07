@@ -69,11 +69,6 @@
       setTimeout(measure,300);
     }
 
-    /* ---------------------------------------------------------
-       Idioma global PT / EN
-       Mantém a mesma página e traduz todo o conteúdo editorial,
-       labels, botões, FAQ, atributos de acessibilidade e metadados.
-       --------------------------------------------------------- */
     const copy = [
       ['.skip','Ir para o conteúdo','Skip to content'],
       ['.nav__link[href="#topo"]','Home','Home'],
@@ -81,12 +76,10 @@
       ['.nav__link[href="#contato"]','Contato','Contact'],
       ['.nav__cta','Agendar uma demonstração','Schedule a consultation'],
       ['.header__cta','Agendar uma demonstração','Schedule a consultation'],
-
       ['.hero__title h1','Casas que só existem <em>uma vez.</em>','Homes that exist <em>only once.</em>'],
       ['.hero__lead','Arquitetura autoral para quem não quer morar em um projeto repetido. <strong>Do conceito à obra, cada residência nasce de uma ideia nova.</strong>','Signature architecture for those who do not want to live in a repeated design. <strong>From concept to construction, every residence begins with a new idea.</strong>'],
       ['.hero .btn--lg','<img class="btn__icon" src="assets/btn-icon.svg?v=20260907-0247" alt="" width="39" height="21"> Quero um projeto exclusivo','<img class="btn__icon" src="assets/btn-icon.svg?v=20260907-0247" alt="" width="39" height="21"> I want an exclusive project'],
       ['.proof__text','+ de 50 <strong>Projetos entregues no Brasil e no exterior.</strong>','50+ <strong>Projects delivered in Brazil and abroad.</strong>'],
-
       ['.ticker .pill:nth-of-type(1)','CONCEITO','CONCEPT'],
       ['.ticker .pill:nth-of-type(2)','PRECISÃO','PRECISION'],
       ['.ticker .pill:nth-of-type(3)','ATEMPORAL','TIMELESS'],
@@ -94,7 +87,6 @@
       ['.ticker .pill:nth-of-type(4)','ARQUITETURA AUTORAL','SIGNATURE ARCHITECTURE'],
       ['.ticker .pill:nth-of-type(5)','IDENTIDADE','IDENTITY'],
       ['.ticker .pill:nth-of-type(6)','EXCLUSIVIDADE','EXCLUSIVITY'],
-
       ['.sobre .eyebrow','// SOBRE MIM','// ABOUT ME'],
       ['.sobre h2','O <em>estúdio</em>','The <em>studio</em>'],
       ['.sobre__copy p:nth-child(1)','Anderson Zawa projeta residências de médio e alto padrão para quem busca mais do que uma casa bonita: <strong>busca uma casa com identidade.</strong>','Anderson Zawa designs mid to high-end residences for people looking for more than a beautiful house: <strong>they want a home with identity.</strong>'],
@@ -103,7 +95,6 @@
       ['.stat:nth-child(2) .stat__label','Estados atendidos no Brasil','Brazilian states served'],
       ['.stat:nth-child(3) .stat__label','Países atendidos','Countries served'],
       ['.stat:nth-child(4) .stat__label','Projetos com conceito exclusivo','Projects with an exclusive concept'],
-
       ['.projetos .eyebrow','// PROJETOS SELECIONADOS','// SELECTED PROJECTS'],
       ['.projetos h2','Cada projeto, um <em>conceito novo.</em>','Every project, a <em>new concept.</em>'],
       ['.projetos .sec-head__desc','Uma seleção de residências autorais entre 3D realistas e obras entregues.','A selection of signature residences, from realistic 3D visuals to completed works.'],
@@ -111,7 +102,6 @@
       ['.card:nth-child(2) .card__info p','Pensada para quem valoriza exclusividade e bem-estar, esta residência traduz a essência do alto padrão por meio de uma arquitetura marcante, ambientes amplos e uma conexão harmoniosa entre design, natureza e qualidade de vida.','Designed for those who value exclusivity and well-being, this residence expresses the essence of high-end living through bold architecture, spacious interiors and a harmonious connection between design, nature and quality of life.'],
       ['.card:nth-child(3) .card__info p','Uma fachada de personalidade marcante e linguagem contemporânea, criada para transformar a identidade do cliente em arquitetura. O terceiro projeto desenvolvido para uma parceria construída com confiança e exclusividade.','A facade with a strong personality and contemporary language, created to turn the client’s identity into architecture. The third project developed within a partnership built on trust and exclusivity.'],
       ['.card:nth-child(4) .card__info p','Projeto internacional que leva a linguagem do estúdio para fora do Brasil, com volumes contidos, materiais nobres e uma implantação que responde ao clima e à paisagem local.','An international project that brings the studio’s design language beyond Brazil, with restrained volumes, refined materials and a layout that responds to the local climate and landscape.'],
-
       ['.processo .eyebrow','// DO PRIMEIRO TRAÇO AO CANTEIRO DE OBRA','// FROM THE FIRST SKETCH TO THE JOB SITE'],
       ['.processo h2','Um processo claro, <em>perto ou longe.</em>','A clear process, <em>near or far.</em>'],
       ['.step:nth-child(1) h3','Imersão','Discovery'],
@@ -123,18 +113,15 @@
       ['.step:nth-child(4) h3','Obra','Construction'],
       ['.step:nth-child(4) p','Suporte à equipe de execução, em qualquer cidade do Brasil, do início ao fim.','Support for the construction team, anywhere in Brazil, from start to finish.'],
       ['.processo__note','<strong>Atendimento em todo o Brasil.</strong> O processo é o mesmo, perto ou longe: reuniões marcadas, etapas claras e tudo registrado em contrato.','<strong>Available throughout Brazil.</strong> The process is the same, near or far: scheduled meetings, clear stages and everything documented in the contract.'],
-
       ['.depoimentos .eyebrow','// QUEM JÁ CONSTRUIU COM O ESTÚDIO','// CLIENTS WHO HAVE BUILT WITH THE STUDIO'],
       ['.depoimentos h2','Confiança à <em>distância.</em>','Trust from <em>anywhere.</em>'],
       ['.reel:nth-child(1) .reel__meta p','Depoimento em vídeo','Video testimonial'],
       ['.reel:nth-child(2) .reel__meta p','Recebendo o 3D','Receiving the 3D design'],
       ['.reel:nth-child(3) .reel__meta p','Tour da obra pronta','Completed home tour'],
-
       ['.cta .eyebrow','// evite prejuízo','// AVOID WASTE'],
       ['.cta h2','Um bom projeto não é custo.<br>É o que <em>evita desperdício</em> na obra e valoriza cada metro construído.','A good design is not a cost.<br>It is what <em>prevents waste</em> during construction and adds value to every built square meter.'],
       ['.cta__note','Contrato claro, com etapas, prazos e entregas definidas por escrito. Você sabe exatamente o que recebe em cada fase.','A clear contract with stages, deadlines and deliverables defined in writing. You know exactly what you receive at every phase.'],
       ['.cta .btn--lg','<img class="btn__icon" src="assets/btn-icon.svg?v=20260907-0247" alt="" width="39" height="21"> Quero um projeto exclusivo','<img class="btn__icon" src="assets/btn-icon.svg?v=20260907-0247" alt="" width="39" height="21"> I want an exclusive project'],
-
       ['.faq .eyebrow','// PERGUNTAS FREQUENTES','// FREQUENTLY ASKED QUESTIONS'],
       ['.faq h2','Ainda em <em>dúvida?</em>','Still have <em>questions?</em>'],
       ['.acc:nth-child(1) .acc__head span','Vocês atendem minha cidade?','Do you work in my city?'],
@@ -184,33 +171,39 @@
     };
 
     const setHTML=(selector,html)=>document.querySelectorAll(selector).forEach(el=>{el.innerHTML=html});
-    const apply=lang=>{
+    const scrollToHero=()=>{
+      const hero=document.querySelector('#topo');
+      if(!hero)return;
+      if(lenis){
+        lenis.scrollTo(hero,{offset:0,duration:1.35,easing:t=>1-Math.pow(1-t,4)});
+      }else{
+        hero.scrollIntoView({behavior:'smooth',block:'start'});
+      }
+    };
+
+    const apply=(lang,opts={})=>{
       lang=lang==='en'?'en':'pt';
       document.documentElement.lang=lang==='en'?'en':'pt-BR';
-
       copy.forEach(([selector,pt,en])=>setHTML(selector,lang==='en'?en:pt));
       document.querySelectorAll('.link-arrow').forEach(el=>el.innerHTML=lang==='en'?linkArrowEN:linkArrowPT);
-
       attrs.forEach(([selector,attr,pt,en])=>document.querySelectorAll(selector).forEach(el=>el.setAttribute(attr,lang==='en'?en:pt)));
       document.querySelectorAll('.shot img').forEach((img,i)=>img.alt=lang==='en'?`Signature project ${i+1}`:`Projeto autoral ${i+1}`);
-
       document.querySelectorAll('.lang__btn').forEach(b=>{
         const on=b.dataset.lang===lang;
         b.classList.toggle('is-active',on);
         b.setAttribute('aria-pressed',on?'true':'false');
       });
-
       const m=meta[lang];
       document.title=m.title;
       const desc=document.querySelector('meta[name="description"]');if(desc)desc.content=m.description;
       const ogTitle=document.querySelector('meta[property="og:title"]');if(ogTitle)ogTitle.content=m.ogTitle;
       const ogDesc=document.querySelector('meta[property="og:description"]');if(ogDesc)ogDesc.content=m.ogDescription;
-
       localStorage.setItem('az-lang',lang);
       document.dispatchEvent(new CustomEvent('az:language-applied',{detail:{lang}}));
+      if(opts.scrollTop){requestAnimationFrame(()=>scrollToHero());}
     };
 
-    document.querySelectorAll('.lang__btn').forEach(b=>b.addEventListener('click',()=>apply(b.dataset.lang)));
+    document.querySelectorAll('.lang__btn').forEach(b=>b.addEventListener('click',()=>apply(b.dataset.lang,{scrollTop:true})));
     apply(localStorage.getItem('az-lang')||'pt');
   });
 })();
