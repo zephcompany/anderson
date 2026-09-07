@@ -6,8 +6,8 @@
 <title>Projeto — Anderson Zawa</title>
 <meta name="theme-color" content="#000000">
 <link rel="icon" href="assets/logo.png">
-<link rel="stylesheet" href="projeto.css?v=20260907-0353">
-<link rel="stylesheet" href="projeto-fix.css?v=20260907-0353">
+<link rel="stylesheet" href="projeto.css?v=20260907-0356">
+<link rel="stylesheet" href="projeto-fix.css?v=20260907-0356">
 </head>
 <body>
 <main class="project-page">
@@ -16,19 +16,34 @@
 
     <header class="header" id="header">
       <div class="header__inner">
-        <a class="logo" href="./" aria-label="Anderson Zawa — Home"><img src="assets/logo.png" alt="Anderson Zawa"></a>
-        <nav class="nav" aria-label="Navegação principal">
+        <a class="logo" href="./" aria-label="Anderson Zawa — início">
+          <img src="assets/logo.png?v=20260907-0247" alt="Anderson Zawa" width="184" height="37">
+        </a>
+
+        <nav class="nav" id="nav" aria-label="Navegação principal">
           <ul class="nav__list">
             <li><a class="nav__link is-active" href="./">Home</a></li>
             <li><a class="nav__link" href="./#projetos">Projetos</a></li>
             <li><a class="nav__link" href="./#contato">Contato</a></li>
           </ul>
-          <div class="lang" aria-label="Idioma">
-            <button class="lang__btn is-active" type="button" data-lang="pt" aria-pressed="true"><img src="assets/flag-pt.svg" alt="">PT</button>
-            <button class="lang__btn" type="button" data-lang="en" aria-pressed="false"><img src="assets/flag-en.svg" alt="">EN</button>
+
+          <div class="lang" role="group" aria-label="Idioma">
+            <button class="lang__btn is-active" type="button" data-lang="pt" aria-pressed="true">
+              <img src="assets/flag-pt.svg?v=20260907-0247" alt="" width="20" height="14"><span>PT</span>
+            </button>
+            <button class="lang__btn" type="button" data-lang="en" aria-pressed="false">
+              <img src="assets/flag-en.svg?v=20260907-0247" alt="" width="20" height="14"><span>EN</span>
+            </button>
           </div>
+
+          <a class="btn btn--sm nav__cta" href="./#contato">Agendar uma demonstração</a>
         </nav>
-        <a class="header__cta" href="./#contato"><span>Agendar uma demonstração</span></a>
+
+        <a class="btn btn--sm header__cta" href="./#contato">Agendar uma demonstração</a>
+
+        <button class="burger" id="burger" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav">
+          <span></span><span></span>
+        </button>
       </div>
     </header>
 
@@ -85,6 +100,7 @@
   </section>
   <p class="rights">TODOS OS DIREITOS RESERVADOS</p>
 </main>
-<script src="projeto.js?v=20260907-0353" defer></script>
+<script src="projeto.js?v=20260907-0356" defer></script>
+<script src="projeto-interactions.js?v=20260907-0356" defer></script>
 </body>
 </html>
