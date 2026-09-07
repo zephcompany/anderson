@@ -1,0 +1,17 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="svgexport-5 1" clip-path="url(#clip0_0_9)">
+<path id="Vector" d="M20 0H0V14H20V0Z" fill="white"/>
+<g id="Group">
+<path id="Vector_2" d="M20 0H0V2H20V0Z" fill="#B22234"/>
+<path id="Vector_3" d="M20 4H0V6H20V4Z" fill="#B22234"/>
+<path id="Vector_4" d="M20 8H0V10H20V8Z" fill="#B22234"/>
+<path id="Vector_5" d="M20 12H0V14H20V12Z" fill="#B22234"/>
+</g>
+<path id="Vector_6" d="M9 0H0V8H9V0Z" fill="#3C3B6E"/>
+</g>
+<defs>
+<clipPath id="clip0_0_9">
+<rect width="20" height="14" fill="white"/>
+</clipPath>
+</defs>
+</svg>
