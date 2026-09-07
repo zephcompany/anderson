@@ -14,7 +14,7 @@
 
     let lenis=null;
     if(window.Lenis){
-      lenis=new Lenis({lerp:0.085,smoothWheel:true,wheelMultiplier:0.9,touchMultiplier:1,syncTouch:false,infinite:false,overscroll:true});
+      lenis=new Lenis({lerp:0.085,smoothWheel:true,wheelMultiplier:0.86,touchMultiplier:1,syncTouch:false,infinite:false,overscroll:true});
       window.__lenis=lenis;
       if(window.gsap){gsap.ticker.add(time=>lenis.raf(time*1000));gsap.ticker.lagSmoothing(0)}
       else{const raf=time=>{lenis.raf(time);requestAnimationFrame(raf)};requestAnimationFrame(raf)}
@@ -22,7 +22,7 @@
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
-      const href=a.getAttribute('href');if(!href||href==='#')return;const el=document.querySelector(href);if(el){e.preventDefault();if(lenis)lenis.scrollTo(el,{offset:-110,duration:1.05});else window.scrollTo({top:el.getBoundingClientRect().top+window.scrollY-110,behavior:'smooth'})}
+      const href=a.getAttribute('href');if(!href||href==='#')return;const el=document.querySelector(href);if(el){e.preventDefault();if(lenis)lenis.scrollTo(el,{offset:-110,duration:1.15});else window.scrollTo({top:el.getBoundingClientRect().top+window.scrollY-110,behavior:'smooth'})}
     }));
 
     if(matchMedia('(pointer:fine)').matches){
@@ -40,19 +40,33 @@
       document.querySelectorAll('.reveal').forEach(el=>gsap.fromTo(el,{autoAlpha:0,y:36,filter:'blur(6px)',scale:.99},{autoAlpha:1,y:0,filter:'blur(0px)',scale:1,duration:.82,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 90%',once:true}}));
       const extraSelectors=['.ticker','.sobre__media','.sobre__text','.stat','.sec-head','.project-card','.project','.step','.processo__note','.reel','.cta__card','.faq__item','.footer__inner','.footer__bottom'];
       const animated=new Set();extraSelectors.forEach(sel=>document.querySelectorAll(sel).forEach((el,i)=>{if(animated.has(el)||el.classList.contains('reveal'))return;animated.add(el);el.classList.add('zeph-enter');gsap.from(el,{autoAlpha:0,y:34,filter:'blur(7px)',scale:.985,duration:.9,delay:Math.min(i*.035,.14),ease:'power3.out',scrollTrigger:{trigger:el,start:'top 91%',once:true}})}));
-      document.querySelectorAll('section').forEach(section=>{const targets=[...section.querySelectorAll(':scope > .wrap > h1,:scope > .wrap > h2,:scope > .wrap > p,:scope > .wrap > .eyebrow')];targets.forEach((el,i)=>{if(animated.has(el)||el.classList.contains('reveal'))return;animated.add(el);gsap.from(el,{autoAlpha:0,y:28,filter:'blur(6px)',duration:.82,delay:i*.04,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 92%',once:true}})})});
+    }
 
-      const proc=document.querySelector('.processo'),marquee=proc?.querySelector('.marquee'),track=proc?.querySelector('.marquee__track');
-      if(proc&&marquee&&track){
-        proc.querySelector('.zeph-timeline')?.remove();
-        const tl=document.createElement('div');tl.className='zeph-timeline';tl.innerHTML='<span>Projetos</span><div class="zeph-timeline__line"><div class="zeph-timeline__progress"></div></div><span>Brasil + exterior</span>';
-        marquee.appendChild(tl);
-        const progress=tl.querySelector('.zeph-timeline__progress');
-        const dist=()=>Math.max(0,Math.min(track.scrollWidth-innerWidth+80,innerWidth*1.35));
-        gsap.set(track,{x:0});
-        gsap.to(track,{x:()=>-dist(),ease:'none',scrollTrigger:{trigger:marquee,start:'top 82%',end:'bottom 18%',scrub:.55,invalidateOnRefresh:true,onUpdate:self=>{progress.style.width=(self.progress*100)+'%'}}});
-      }
-      requestAnimationFrame(()=>ScrollTrigger.refresh());
+    const proc=document.querySelector('.processo'),marquee=proc?.querySelector('.marquee'),track=proc?.querySelector('.marquee__track');
+    if(proc&&marquee&&track){
+      proc.querySelector('.zeph-timeline')?.remove();
+      const tl=document.createElement('div');tl.className='zeph-timeline';tl.innerHTML='<span>Projetos</span><div class="zeph-timeline__line"><div class="zeph-timeline__progress"></div></div><span>Brasil + exterior</span>';
+      marquee.appendChild(tl);
+      const progressBar=tl.querySelector('.zeph-timeline__progress');
+      let start=0,end=1,maxX=0;
+      const measure=()=>{
+        track.style.transform='translate3d(0,0,0)';
+        const rect=marquee.getBoundingClientRect();
+        const top=window.scrollY+rect.top;
+        start=top-innerHeight*.72;
+        end=top+Math.max(innerHeight*.9,marquee.offsetHeight*.85);
+        maxX=Math.max(0,Math.min(track.scrollWidth-innerWidth+40,innerWidth*1.45));
+        updateHorizontal();
+      };
+      const updateHorizontal=()=>{
+        const p=Math.max(0,Math.min(1,(window.scrollY-start)/Math.max(1,end-start)));
+        track.style.transform=`translate3d(${-maxX*p}px,0,0)`;
+        progressBar.style.width=`${p*100}%`;
+      };
+      addEventListener('scroll',updateHorizontal,{passive:true});
+      addEventListener('resize',measure,{passive:true});
+      requestAnimationFrame(measure);
+      setTimeout(measure,300);
     }
 
     const dict={'Sobre':'About','Projetos':'Projects','Processo':'Process','Depoimentos':'Testimonials','Contato':'Contact','Quero um projeto exclusivo':'I want an exclusive project','Agendar uma demonstração':'Schedule a consultation','// SOBRE MIM':'// ABOUT ME','O estúdio':'The studio','// PROJETOS':'// PROJECTS','Projetos selecionados':'Selected projects','// DO PRIMEIRO TRAÇO AO CANTEIRO DE OBRA':'// FROM FIRST SKETCH TO CONSTRUCTION','Um processo claro, perto ou longe.':'A clear process, near or far.','Atendimento em todo o Brasil.':'Service throughout Brazil.','Confiança à distância.':'Trust from anywhere.','// evite prejuízo':'// avoid waste','+ de 50':'50+','Projetos entregues no Brasil e no exterior.':'Projects delivered in Brazil and abroad.'};
