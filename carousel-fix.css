@@ -1,0 +1,17 @@
+/* Carrossel de projetos — correção de alinhamento e clipping */
+#carousel-projetos .carousel__viewport{
+  overflow:hidden!important;
+  scroll-behavior:smooth;
+  overscroll-behavior-x:contain;
+  scrollbar-width:none;
+}
+#carousel-projetos .carousel__viewport::-webkit-scrollbar{display:none}
+#carousel-projetos .carousel__track{
+  transform:none!important;
+  transition:none!important;
+  padding-right:max(var(--gutter),calc((100vw - var(--wrap)) / 2 + var(--gutter)));
+}
+#carousel-projetos .card{overflow:visible!important}
+#carousel-projetos .card__info{overflow:visible!important}
+#carousel-projetos .link-arrow{overflow:visible!important;padding-right:18px}
+#carousel-projetos .link-arrow::after{display:none!important}
