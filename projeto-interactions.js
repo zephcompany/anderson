@@ -3,11 +3,22 @@
   const load=src=>new Promise((ok,fail)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=fail;document.head.appendChild(s)});
   ready(async()=>{
     try{await load('https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js')}catch(e){}
+
     let lenis=null;
     if(window.Lenis){
-      lenis=new Lenis({lerp:.085,smoothWheel:true,wheelMultiplier:.86,touchMultiplier:1,syncTouch:false,infinite:false,overscroll:true});
+      if(window.__lenis&&typeof window.__lenis.destroy==='function') window.__lenis.destroy();
+      lenis=new Lenis({
+        lerp:.07,
+        smoothWheel:true,
+        wheelMultiplier:.72,
+        touchMultiplier:1,
+        syncTouch:false,
+        infinite:false,
+        overscroll:true
+      });
       window.__lenis=lenis;
-      const raf=t=>{lenis.raf(t);requestAnimationFrame(raf)};requestAnimationFrame(raf);
+      const raf=t=>{lenis.raf(t);requestAnimationFrame(raf)};
+      requestAnimationFrame(raf);
     }
 
     const header=document.querySelector('#header');let last=0;
