@@ -2,14 +2,6 @@
   const ready = fn => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn();
 
   ready(() => {
-    /* =========================================================
-       HOTFIX GLOBAL
-       1) links "Ver projeto" sempre clicáveis
-       2) troca PT/EN volta suavemente para a primeira dobra
-       3) hero com vídeo de fundo + vinheta
-       4) CTAs levam ao WhatsApp com mensagem padrão
-       ========================================================= */
-
     const style = document.createElement('style');
     style.textContent = `
       html.az-lang-changing main,
@@ -30,6 +22,12 @@
         overflow:visible!important;
       }
 
+      /* linhas da hero em branco com 10% */
+      #topo .hero__title .rule{
+        background:#ffffff1a!important;
+        border-color:#ffffff1a!important;
+      }
+
       /* HERO VIDEO */
       #topo.hero{
         position:relative!important;
@@ -38,51 +36,27 @@
         isolation:isolate;
         background:#000;
       }
-      #topo.hero > .wrap{
-        position:relative;
-        z-index:3;
-      }
+      #topo.hero > .wrap{position:relative;z-index:3}
       .az-hero-video-layer{
-        position:absolute;
-        inset:0;
-        z-index:0;
-        pointer-events:none;
-        overflow:hidden;
-        background:#000;
+        position:absolute;inset:0;z-index:0;pointer-events:none;
+        overflow:hidden;background:#000;
       }
       .az-hero-video{
-        position:absolute;
-        inset:0;
-        width:100%!important;
-        height:100%!important;
-        max-width:none!important;
-        object-fit:cover;
-        object-position:center center;
-        opacity:0;
-        transform:scale(1.025);
-        filter:saturate(.85) contrast(1.04);
+        position:absolute;inset:0;width:100%!important;height:100%!important;
+        max-width:none!important;object-fit:cover;object-position:center center;
+        opacity:0;transform:scale(1.025);filter:saturate(.85) contrast(1.04);
         transition:opacity 1.2s ease;
       }
-      .az-hero-video.is-ready{
-        opacity:.50;
-      }
+      .az-hero-video.is-ready{opacity:.50}
       .az-hero-video-layer::before{
-        content:"";
-        position:absolute;
-        inset:0;
-        z-index:2;
-        pointer-events:none;
+        content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
         background:
-          linear-gradient(to bottom, rgba(0,0,0,.92) 0%, rgba(0,0,0,.18) 21%, rgba(0,0,0,.08) 48%, rgba(0,0,0,.22) 72%, #000 100%),
-          linear-gradient(to right, #000 0%, rgba(0,0,0,.35) 14%, rgba(0,0,0,.06) 34%, rgba(0,0,0,.06) 66%, rgba(0,0,0,.35) 86%, #000 100%),
-          radial-gradient(ellipse at center, rgba(0,0,0,0) 0%, rgba(0,0,0,.06) 28%, rgba(0,0,0,.36) 62%, rgba(0,0,0,.92) 100%);
+          linear-gradient(to bottom,rgba(0,0,0,.92) 0%,rgba(0,0,0,.18) 21%,rgba(0,0,0,.08) 48%,rgba(0,0,0,.22) 72%,#000 100%),
+          linear-gradient(to right,#000 0%,rgba(0,0,0,.35) 14%,rgba(0,0,0,.06) 34%,rgba(0,0,0,.06) 66%,rgba(0,0,0,.35) 86%,#000 100%),
+          radial-gradient(ellipse at center,rgba(0,0,0,0) 0%,rgba(0,0,0,.06) 28%,rgba(0,0,0,.36) 62%,rgba(0,0,0,.92) 100%);
       }
       .az-hero-video-layer::after{
-        content:"";
-        position:absolute;
-        inset:0;
-        z-index:3;
-        pointer-events:none;
+        content:"";position:absolute;inset:0;z-index:3;pointer-events:none;
         box-shadow:inset 0 0 180px 80px rgba(0,0,0,.82);
       }
       @media(max-width:900px){
@@ -93,13 +67,23 @@
     `;
     document.head.appendChild(style);
 
-    /* HERO VIDEO */
+    /* otimizações seguras sem alterar o visual */
+    document.querySelectorAll('img').forEach(img => {
+      if (!img.closest('#topo') && !img.closest('.header')) {
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        try { img.fetchPriority = 'low'; } catch(e) {}
+      } else {
+        img.decoding = 'async';
+      }
+    });
+
     const HERO_VIDEO_URL = 'https://andersonzawa.com.br/wp-content/uploads/2026/09/Video-dobra-1.mp4';
     const hero = document.querySelector('#topo.hero');
     if (hero && !hero.querySelector('.az-hero-video-layer')) {
       const layer = document.createElement('div');
       layer.className = 'az-hero-video-layer';
-      layer.setAttribute('aria-hidden', 'true');
+      layer.setAttribute('aria-hidden','true');
 
       const video = document.createElement('video');
       video.className = 'az-hero-video';
@@ -108,51 +92,66 @@
       video.defaultMuted = true;
       video.loop = true;
       video.playsInline = true;
-      video.preload = 'auto';
-      video.setAttribute('autoplay', '');
-      video.setAttribute('muted', '');
-      video.setAttribute('loop', '');
-      video.setAttribute('playsinline', '');
-      video.setAttribute('webkit-playsinline', '');
+      video.preload = 'metadata';
+      video.setAttribute('autoplay','');
+      video.setAttribute('muted','');
+      video.setAttribute('loop','');
+      video.setAttribute('playsinline','');
+      video.setAttribute('webkit-playsinline','');
       video.tabIndex = -1;
       video.src = HERO_VIDEO_URL;
 
       const startVideo = () => {
         video.muted = true;
         video.defaultMuted = true;
-        video.play().catch(() => {});
+        const p = video.play();
+        if (p && typeof p.catch === 'function') p.catch(() => {});
       };
-      video.addEventListener('canplay', () => { video.classList.add('is-ready'); startVideo(); }, { once:true });
-      video.addEventListener('loadeddata', () => { video.classList.add('is-ready'); startVideo(); }, { once:true });
-      video.addEventListener('pause', startVideo);
-      document.addEventListener('visibilitychange', () => { if (!document.hidden) startVideo(); });
+
+      video.addEventListener('loadeddata',() => {
+        video.classList.add('is-ready');
+        startVideo();
+      },{once:true});
+      video.addEventListener('canplay',() => {
+        video.classList.add('is-ready');
+        startVideo();
+      },{once:true});
 
       layer.appendChild(video);
       hero.prepend(layer);
-      startVideo();
+      requestAnimationFrame(startVideo);
+
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(entries => {
+          const visible = entries[0]?.isIntersecting;
+          if (visible) startVideo();
+          else video.pause();
+        },{threshold:.05});
+        io.observe(hero);
+      }
+      document.addEventListener('visibilitychange',() => {
+        if (!document.hidden && hero.getBoundingClientRect().bottom > 0) startVideo();
+      });
     }
 
-    /* WhatsApp oficial + mensagem padrão */
     const whatsappMessage = 'Olá, Anderson! Vi seu site e gostaria de conversar sobre um projeto exclusivo para minha residência.';
     const whatsappUrl = 'https://wa.me/5514991324895?text=' + encodeURIComponent(whatsappMessage);
     document.querySelectorAll('.hero .btn--lg, .cta .btn--lg, .header__cta, .nav__cta').forEach(link => {
-      link.href = whatsappUrl;
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
+      link.href = whatsappUrl; link.target = '_blank'; link.rel = 'noopener noreferrer';
     });
 
     document.querySelectorAll('.lang__btn').forEach(btn => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click',() => {
         document.documentElement.classList.add('az-lang-changing');
-        const hero = document.querySelector('#topo');
+        const heroEl = document.querySelector('#topo');
         const goTop = () => {
-          if (window.__lenis && hero) window.__lenis.scrollTo(hero, { offset:0, duration:1.35, easing:t=>1-Math.pow(1-t,4) });
-          else if (hero) hero.scrollIntoView({ behavior:'smooth', block:'start' });
-          else window.scrollTo({ top:0, behavior:'smooth' });
+          if (window.__lenis && heroEl) window.__lenis.scrollTo(heroEl,{offset:0,duration:1.35,easing:t=>1-Math.pow(1-t,4)});
+          else if (heroEl) heroEl.scrollIntoView({behavior:'smooth',block:'start'});
+          else window.scrollTo({top:0,behavior:'smooth'});
         };
         requestAnimationFrame(goTop);
-        setTimeout(() => document.documentElement.classList.remove('az-lang-changing'), 360);
-      }, true);
+        setTimeout(() => document.documentElement.classList.remove('az-lang-changing'),360);
+      },true);
     });
 
     const root = document.querySelector('#carousel-projetos');
@@ -167,15 +166,15 @@
     track.style.transform = 'none';
     const padLeft = () => parseFloat(getComputedStyle(viewport).paddingLeft) || 0;
     const padRight = () => parseFloat(getComputedStyle(viewport).paddingRight) || 0;
-    const maxScroll = () => Math.max(0, viewport.scrollWidth - viewport.clientWidth);
+    const maxScroll = () => Math.max(0,viewport.scrollWidth-viewport.clientWidth);
     let index = 0;
-    function targetFor(i) { i=Math.max(0,Math.min(i,cards.length-1)); const card=cards[i]; const left=card.offsetLeft-padLeft(); if(i===cards.length-1){const rightAligned=card.offsetLeft+card.offsetWidth-viewport.clientWidth+padRight();return Math.max(0,Math.min(maxScroll(),rightAligned));} return Math.max(0,Math.min(maxScroll(),left)); }
-    function paint(){ if(prev)prev.disabled=false;if(next)next.disabled=false;if(dots)[...dots.querySelectorAll('button')].forEach((d,i)=>d.classList.toggle('is-active',i===index)); }
+    function targetFor(i){i=Math.max(0,Math.min(i,cards.length-1));const card=cards[i];const left=card.offsetLeft-padLeft();if(i===cards.length-1){const r=card.offsetLeft+card.offsetWidth-viewport.clientWidth+padRight();return Math.max(0,Math.min(maxScroll(),r));}return Math.max(0,Math.min(maxScroll(),left));}
+    function paint(){if(prev)prev.disabled=false;if(next)next.disabled=false;if(dots)[...dots.querySelectorAll('button')].forEach((d,i)=>d.classList.toggle('is-active',i===index));}
     function go(i,smooth=true){if(i<0)i=cards.length-1;if(i>=cards.length)i=0;index=i;viewport.scrollTo({left:targetFor(index),behavior:smooth?'smooth':'auto'});paint();}
     root.addEventListener('click',e=>{const btn=e.target.closest('[data-dir]');if(!btn||!root.contains(btn))return;e.preventDefault();e.stopImmediatePropagation();go(index+Number(btn.dataset.dir||0));},true);
     if(dots)dots.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const all=[...dots.querySelectorAll('button')],i=all.indexOf(b);if(i>=0){e.preventDefault();e.stopImmediatePropagation();go(i);}},true);
-    let down=false,sx=0,sl=0,moved=false,pressedLink=null;
-    viewport.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&e.button!==0)return;pressedLink=e.target.closest('a.link-arrow');if(pressedLink){down=false;moved=false;return;}down=true;moved=false;sx=e.clientX;sl=viewport.scrollLeft;viewport.setPointerCapture?.(e.pointerId);},true);
+    let down=false,sx=0,sl=0,moved=false;
+    viewport.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&e.button!==0)return;if(e.target.closest('a.link-arrow')){down=false;moved=false;return;}down=true;moved=false;sx=e.clientX;sl=viewport.scrollLeft;viewport.setPointerCapture?.(e.pointerId);},true);
     viewport.addEventListener('pointermove',e=>{if(!down)return;const dx=e.clientX-sx;if(Math.abs(dx)>4)moved=true;viewport.scrollLeft=sl-dx;},true);
     const finish=()=>{if(!down)return;down=false;const center=viewport.scrollLeft+viewport.clientWidth/2;let best=0,bestDist=Infinity;cards.forEach((c,i)=>{const cc=c.offsetLeft+c.offsetWidth/2,d=Math.abs(cc-center);if(d<bestDist){bestDist=d;best=i;}});go(best);};
     viewport.addEventListener('pointerup',finish,true);viewport.addEventListener('pointercancel',finish,true);
