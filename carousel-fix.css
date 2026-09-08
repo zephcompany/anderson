@@ -38,6 +38,7 @@
   z-index:0;
   background:radial-gradient(70% 60% at 50% 50%,rgba(0,0,0,.92) 0%,rgba(0,0,0,.82) 55%,rgba(0,0,0,.45) 100%);
   pointer-events:none;
+  opacity:80%;
 }
 .cta>.wrap{
   position:relative;
