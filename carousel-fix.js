@@ -22,11 +22,8 @@
         overflow:visible!important;
       }
 
-      /* linhas da hero em branco com 10% */
-      #topo .hero__title .rule{
-        background:#ffffff1a!important;
-        border-color:#ffffff1a!important;
-      }
+      /* remove as duas linhas da hero */
+      #topo .hero__title .rule{display:none!important}
 
       /* HERO VIDEO */
       #topo.hero{
@@ -67,15 +64,12 @@
     `;
     document.head.appendChild(style);
 
-    /* otimizações seguras sem alterar o visual */
     document.querySelectorAll('img').forEach(img => {
       if (!img.closest('#topo') && !img.closest('.header')) {
         img.loading = 'lazy';
         img.decoding = 'async';
         try { img.fetchPriority = 'low'; } catch(e) {}
-      } else {
-        img.decoding = 'async';
-      }
+      } else img.decoding = 'async';
     });
 
     const HERO_VIDEO_URL = 'https://andersonzawa.com.br/wp-content/uploads/2026/09/Video-dobra-1.mp4';
@@ -84,61 +78,25 @@
       const layer = document.createElement('div');
       layer.className = 'az-hero-video-layer';
       layer.setAttribute('aria-hidden','true');
-
       const video = document.createElement('video');
       video.className = 'az-hero-video';
-      video.autoplay = true;
-      video.muted = true;
-      video.defaultMuted = true;
-      video.loop = true;
-      video.playsInline = true;
-      video.preload = 'metadata';
-      video.setAttribute('autoplay','');
-      video.setAttribute('muted','');
-      video.setAttribute('loop','');
-      video.setAttribute('playsinline','');
-      video.setAttribute('webkit-playsinline','');
-      video.tabIndex = -1;
-      video.src = HERO_VIDEO_URL;
-
-      const startVideo = () => {
-        video.muted = true;
-        video.defaultMuted = true;
-        const p = video.play();
-        if (p && typeof p.catch === 'function') p.catch(() => {});
-      };
-
-      video.addEventListener('loadeddata',() => {
-        video.classList.add('is-ready');
-        startVideo();
-      },{once:true});
-      video.addEventListener('canplay',() => {
-        video.classList.add('is-ready');
-        startVideo();
-      },{once:true});
-
-      layer.appendChild(video);
-      hero.prepend(layer);
-      requestAnimationFrame(startVideo);
-
+      video.autoplay = true; video.muted = true; video.defaultMuted = true; video.loop = true; video.playsInline = true; video.preload = 'metadata';
+      video.setAttribute('autoplay',''); video.setAttribute('muted',''); video.setAttribute('loop',''); video.setAttribute('playsinline',''); video.setAttribute('webkit-playsinline','');
+      video.tabIndex = -1; video.src = HERO_VIDEO_URL;
+      const startVideo = () => { video.muted = true; video.defaultMuted = true; const p = video.play(); if (p && typeof p.catch === 'function') p.catch(() => {}); };
+      video.addEventListener('loadeddata',() => { video.classList.add('is-ready'); startVideo(); },{once:true});
+      video.addEventListener('canplay',() => { video.classList.add('is-ready'); startVideo(); },{once:true});
+      layer.appendChild(video); hero.prepend(layer); requestAnimationFrame(startVideo);
       if ('IntersectionObserver' in window) {
-        const io = new IntersectionObserver(entries => {
-          const visible = entries[0]?.isIntersecting;
-          if (visible) startVideo();
-          else video.pause();
-        },{threshold:.05});
+        const io = new IntersectionObserver(entries => { const visible = entries[0]?.isIntersecting; if (visible) startVideo(); else video.pause(); },{threshold:.05});
         io.observe(hero);
       }
-      document.addEventListener('visibilitychange',() => {
-        if (!document.hidden && hero.getBoundingClientRect().bottom > 0) startVideo();
-      });
+      document.addEventListener('visibilitychange',() => { if (!document.hidden && hero.getBoundingClientRect().bottom > 0) startVideo(); });
     }
 
     const whatsappMessage = 'Olá, Anderson! Vi seu site e gostaria de conversar sobre um projeto exclusivo para minha residência.';
     const whatsappUrl = 'https://wa.me/5514991324895?text=' + encodeURIComponent(whatsappMessage);
-    document.querySelectorAll('.hero .btn--lg, .cta .btn--lg, .header__cta, .nav__cta').forEach(link => {
-      link.href = whatsappUrl; link.target = '_blank'; link.rel = 'noopener noreferrer';
-    });
+    document.querySelectorAll('.hero .btn--lg, .cta .btn--lg, .header__cta, .nav__cta').forEach(link => { link.href = whatsappUrl; link.target = '_blank'; link.rel = 'noopener noreferrer'; });
 
     document.querySelectorAll('.lang__btn').forEach(btn => {
       btn.addEventListener('click',() => {
@@ -164,11 +122,19 @@
     const dots = root.querySelector('.dots');
     if (!viewport || !track || !cards.length) return;
     track.style.transform = 'none';
-    const padLeft = () => parseFloat(getComputedStyle(viewport).paddingLeft) || 0;
-    const padRight = () => parseFloat(getComputedStyle(viewport).paddingRight) || 0;
     const maxScroll = () => Math.max(0,viewport.scrollWidth-viewport.clientWidth);
+    const applyCenterPadding = () => {
+      const side = Math.max(18,(viewport.clientWidth-cards[0].offsetWidth)/2);
+      track.style.paddingLeft = side+'px';
+      track.style.paddingRight = side+'px';
+    };
     let index = 0;
-    function targetFor(i){i=Math.max(0,Math.min(i,cards.length-1));const card=cards[i];const left=card.offsetLeft-padLeft();if(i===cards.length-1){const r=card.offsetLeft+card.offsetWidth-viewport.clientWidth+padRight();return Math.max(0,Math.min(maxScroll(),r));}return Math.max(0,Math.min(maxScroll(),left));}
+    function targetFor(i){
+      i=Math.max(0,Math.min(i,cards.length-1));
+      const card=cards[i];
+      const target=card.offsetLeft-(viewport.clientWidth-card.offsetWidth)/2;
+      return Math.max(0,Math.min(maxScroll(),target));
+    }
     function paint(){if(prev)prev.disabled=false;if(next)next.disabled=false;if(dots)[...dots.querySelectorAll('button')].forEach((d,i)=>d.classList.toggle('is-active',i===index));}
     function go(i,smooth=true){if(i<0)i=cards.length-1;if(i>=cards.length)i=0;index=i;viewport.scrollTo({left:targetFor(index),behavior:smooth?'smooth':'auto'});paint();}
     root.addEventListener('click',e=>{const btn=e.target.closest('[data-dir]');if(!btn||!root.contains(btn))return;e.preventDefault();e.stopImmediatePropagation();go(index+Number(btn.dataset.dir||0));},true);
@@ -181,6 +147,7 @@
     viewport.addEventListener('mousedown',e=>{if(e.target.closest('a.link-arrow'))e.stopImmediatePropagation();},true);
     viewport.addEventListener('touchstart',e=>{if(e.target.closest('a.link-arrow'))e.stopImmediatePropagation();},{capture:true,passive:true});
     root.addEventListener('click',e=>{const link=e.target.closest('a.link-arrow');if(!link||!root.contains(link))return;e.preventDefault();e.stopImmediatePropagation();const href=link.getAttribute('href');if(href)window.location.assign(href);},true);
-    const refresh=()=>go(index,false);addEventListener('resize',refresh,{passive:true});addEventListener('load',refresh,{once:true});setTimeout(refresh,400);paint();
+    const refresh=()=>{applyCenterPadding();go(index,false)};
+    addEventListener('resize',refresh,{passive:true}); addEventListener('load',refresh,{once:true}); requestAnimationFrame(refresh); setTimeout(refresh,400); paint();
   });
 })();
