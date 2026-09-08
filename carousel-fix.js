@@ -25,6 +25,23 @@
       /* remove as duas linhas da hero */
       #topo .hero__title .rule{display:none!important}
 
+      /* galeria do processo em loop contínuo */
+      .processo .marquee__track{
+        animation:none!important;
+        display:flex!important;
+        width:max-content!important;
+        will-change:transform!important;
+      }
+      .processo .marquee__group,
+      .processo .marquee__group:nth-child(n+2){
+        display:flex!important;
+      }
+      .processo .marquee__group .shot:nth-child(n+9){display:none!important}
+      .processo .zeph-timeline{display:none!important}
+      @media(max-width:900px){
+        .processo .marquee__group .shot:nth-child(n+7){display:none!important}
+      }
+
       /* HERO VIDEO */
       #topo.hero{
         position:relative!important;
@@ -112,6 +129,47 @@
       },true);
     });
 
+    /* carrossel da seção Processo: loop automático, sem vínculo com scroll */
+    const processMarquee = document.querySelector('.processo .marquee');
+    const processTrack = processMarquee?.querySelector('.marquee__track');
+    if (processMarquee && processTrack) {
+      const groups = [...processTrack.querySelectorAll('.marquee__group')];
+      if (groups.length === 1) processTrack.appendChild(groups[0].cloneNode(true));
+      processTrack.querySelectorAll('.marquee__group').forEach(g => { g.style.display = 'flex'; });
+
+      let x = 0;
+      let speed = 36;
+      let targetSpeed = 36;
+      let last = performance.now();
+      let loopWidth = 1;
+
+      const measureLoop = () => {
+        const first = processTrack.querySelector('.marquee__group');
+        if (!first) return;
+        const cs = getComputedStyle(first);
+        loopWidth = first.getBoundingClientRect().width + (parseFloat(cs.marginRight) || 0);
+      };
+
+      const animateLoop = now => {
+        const dt = Math.min(.05,(now-last)/1000);
+        last = now;
+        speed += (targetSpeed-speed) * Math.min(1,dt*5.5);
+        x -= speed * dt;
+        if (loopWidth > 1 && x <= -loopWidth) x += loopWidth;
+        processTrack.style.transform = `translate3d(${x}px,0,0)`;
+        requestAnimationFrame(animateLoop);
+      };
+
+      processMarquee.addEventListener('mouseenter',() => { targetSpeed = 0; });
+      processMarquee.addEventListener('mouseleave',() => { targetSpeed = 36; });
+      processMarquee.addEventListener('focusin',() => { targetSpeed = 0; });
+      processMarquee.addEventListener('focusout',() => { targetSpeed = 36; });
+      addEventListener('resize',measureLoop,{passive:true});
+      requestAnimationFrame(() => { measureLoop(); last = performance.now(); requestAnimationFrame(animateLoop); });
+      setTimeout(measureLoop,500);
+    }
+
+    /* carrossel Projetos: cada card abre já centralizado */
     const root = document.querySelector('#carousel-projetos');
     if (!root) return;
     const viewport = root.querySelector('.carousel__viewport');
