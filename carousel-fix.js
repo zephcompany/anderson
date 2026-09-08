@@ -140,7 +140,7 @@
       setTimeout(measureLoop,500);
     }
 
-    /* Projetos: primeiro card já nasce exatamente no centro da tela */
+    /* Projetos: inicia visualmente centralizado na sequência */
     const root = document.querySelector('#carousel-projetos');
     if (!root) return;
     const viewport = root.querySelector('.carousel__viewport');
@@ -161,7 +161,8 @@
       track.style.setProperty('padding-left',side+'px','important');
       track.style.setProperty('padding-right',side+'px','important');
     };
-    let index = 0;
+    const initialIndex = Math.max(0,Math.floor((cards.length-1)/2));
+    let index = initialIndex;
     function targetFor(i){
       i=Math.max(0,Math.min(i,cards.length-1));
       const card=cards[i];
@@ -183,8 +184,8 @@
 
     const centerInitial = () => {
       applyCenterPadding();
-      index = 0;
-      viewport.scrollLeft = targetFor(0);
+      index = initialIndex;
+      viewport.scrollLeft = targetFor(initialIndex);
       paint();
     };
     addEventListener('resize',centerInitial,{passive:true});
