@@ -103,7 +103,7 @@ html{scroll-behavior:auto!important}
 
   .cta{padding-block:82px!important}
   .cta__card{padding:28px 18px!important;border-radius:22px!important}
-  .cta h2{max-width:100%!important}
+  .cta h2{max-width:100%!important;font-size:clamp(1.9rem,8.3vw,2.35rem)!important;line-height:1.08!important;letter-spacing:-.02em!important}
   .cta__note{font-size:14px!important;line-height:1.5!important}
   .cta .btn--lg{width:100%!important;min-width:0!important;height:64px!important;font-size:1rem!important}
 
