@@ -24,6 +24,18 @@
 
       #topo .hero__title .rule{display:none!important}
 
+      /* Processo: suaviza a entrada da imagem para não criar corte seco */
+      .processo__hero{position:relative!important}
+      .processo__hero::before{
+        content:"";
+        position:absolute;
+        inset:0 0 auto 0;
+        height:clamp(110px,14vw,210px);
+        z-index:2;
+        pointer-events:none;
+        background:linear-gradient(to bottom,#000 0%,rgba(0,0,0,.92) 16%,rgba(0,0,0,.62) 44%,rgba(0,0,0,.22) 72%,rgba(0,0,0,0) 100%);
+      }
+
       /* Processo: ignora completamente qualquer transform ligado ao scroll */
       .processo .marquee__track{
         animation:none!important;
@@ -38,6 +50,7 @@
       .processo .zeph-timeline{display:none!important}
       @media(max-width:900px){
         .processo .marquee__group .shot:nth-child(n+7){display:none!important}
+        .processo__hero::before{height:120px}
       }
 
       #topo.hero{
