@@ -6,6 +6,7 @@
        HOTFIX GLOBAL
        1) links "Ver projeto" sempre clicáveis
        2) troca PT/EN volta suavemente para a primeira dobra
+       3) hero pronta para vídeo de fundo com vinheta
        ========================================================= */
 
     const style = document.createElement('style');
@@ -27,8 +28,103 @@
         z-index:10!important;
         overflow:visible!important;
       }
+
+      /* HERO VIDEO */
+      #topo.hero{
+        position:relative!important;
+        min-height:100svh;
+        overflow:hidden!important;
+        isolation:isolate;
+        background:#000;
+      }
+      #topo.hero > .wrap{
+        position:relative;
+        z-index:3;
+      }
+      .az-hero-video-layer{
+        position:absolute;
+        inset:0;
+        z-index:0;
+        pointer-events:none;
+        overflow:hidden;
+        background:#000;
+      }
+      .az-hero-video{
+        position:absolute;
+        inset:0;
+        width:100%!important;
+        height:100%!important;
+        max-width:none!important;
+        object-fit:cover;
+        object-position:center center;
+        opacity:0;
+        transform:scale(1.025);
+        filter:saturate(.85) contrast(1.04);
+        transition:opacity 1.2s ease;
+      }
+      .az-hero-video.is-ready{
+        opacity:.20;
+      }
+      .az-hero-video-layer::before{
+        content:"";
+        position:absolute;
+        inset:0;
+        z-index:2;
+        pointer-events:none;
+        background:
+          linear-gradient(to bottom, rgba(0,0,0,.92) 0%, rgba(0,0,0,.18) 21%, rgba(0,0,0,.08) 48%, rgba(0,0,0,.22) 72%, #000 100%),
+          linear-gradient(to right, #000 0%, rgba(0,0,0,.35) 14%, rgba(0,0,0,.06) 34%, rgba(0,0,0,.06) 66%, rgba(0,0,0,.35) 86%, #000 100%),
+          radial-gradient(ellipse at center, rgba(0,0,0,0) 0%, rgba(0,0,0,.06) 28%, rgba(0,0,0,.36) 62%, rgba(0,0,0,.92) 100%);
+      }
+      .az-hero-video-layer::after{
+        content:"";
+        position:absolute;
+        inset:0;
+        z-index:3;
+        pointer-events:none;
+        box-shadow:inset 0 0 180px 80px rgba(0,0,0,.82);
+      }
+      @media(max-width:900px){
+        #topo.hero{min-height:auto}
+        .az-hero-video{transform:scale(1.08)}
+        .az-hero-video-layer::after{box-shadow:inset 0 0 110px 42px rgba(0,0,0,.86)}
+      }
     `;
     document.head.appendChild(style);
+
+    /* ---------------------------------------------------------
+       HERO VIDEO
+       Quando você enviar o link, basta trocar o valor abaixo.
+       --------------------------------------------------------- */
+    const HERO_VIDEO_URL = '';
+    const hero = document.querySelector('#topo.hero');
+    if (hero && !hero.querySelector('.az-hero-video-layer')) {
+      const layer = document.createElement('div');
+      layer.className = 'az-hero-video-layer';
+      layer.setAttribute('aria-hidden', 'true');
+
+      const video = document.createElement('video');
+      video.className = 'az-hero-video';
+      video.autoplay = true;
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.preload = 'metadata';
+      video.setAttribute('muted', '');
+      video.setAttribute('playsinline', '');
+      video.setAttribute('webkit-playsinline', '');
+      video.tabIndex = -1;
+
+      if (HERO_VIDEO_URL) {
+        video.src = HERO_VIDEO_URL;
+        video.addEventListener('canplay', () => video.classList.add('is-ready'), { once:true });
+        video.addEventListener('loadeddata', () => video.classList.add('is-ready'), { once:true });
+        video.play().catch(() => {});
+      }
+
+      layer.appendChild(video);
+      hero.prepend(layer);
+    }
 
     /* ---------------------------------------------------------
        Troca de idioma: fade curto + scroll suave para o topo
