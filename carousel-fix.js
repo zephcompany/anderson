@@ -6,7 +6,8 @@
        HOTFIX GLOBAL
        1) links "Ver projeto" sempre clicáveis
        2) troca PT/EN volta suavemente para a primeira dobra
-       3) hero pronta para vídeo de fundo com vinheta
+       3) hero com vídeo de fundo + vinheta
+       4) CTAs levam ao WhatsApp com mensagem padrão
        ========================================================= */
 
     const style = document.createElement('style');
@@ -94,9 +95,8 @@
 
     /* ---------------------------------------------------------
        HERO VIDEO
-       Quando você enviar o link, basta trocar o valor abaixo.
        --------------------------------------------------------- */
-    const HERO_VIDEO_URL = '';
+    const HERO_VIDEO_URL = 'https://andersonzawa.com.br/wp-content/uploads/2026/09/Video-dobra-1.mp4';
     const hero = document.querySelector('#topo.hero');
     if (hero && !hero.querySelector('.az-hero-video-layer')) {
       const layer = document.createElement('div');
@@ -115,16 +115,25 @@
       video.setAttribute('webkit-playsinline', '');
       video.tabIndex = -1;
 
-      if (HERO_VIDEO_URL) {
-        video.src = HERO_VIDEO_URL;
-        video.addEventListener('canplay', () => video.classList.add('is-ready'), { once:true });
-        video.addEventListener('loadeddata', () => video.classList.add('is-ready'), { once:true });
-        video.play().catch(() => {});
-      }
+      video.src = HERO_VIDEO_URL;
+      video.addEventListener('canplay', () => video.classList.add('is-ready'), { once:true });
+      video.addEventListener('loadeddata', () => video.classList.add('is-ready'), { once:true });
+      video.play().catch(() => {});
 
       layer.appendChild(video);
       hero.prepend(layer);
     }
+
+    /* ---------------------------------------------------------
+       WhatsApp oficial + mensagem padrão
+       --------------------------------------------------------- */
+    const whatsappMessage = 'Olá, Anderson! Vi seu site e gostaria de conversar sobre um projeto exclusivo para minha residência.';
+    const whatsappUrl = 'https://wa.me/5514991324895?text=' + encodeURIComponent(whatsappMessage);
+    document.querySelectorAll('.hero .btn--lg, .cta .btn--lg, .header__cta, .nav__cta').forEach(link => {
+      link.href = whatsappUrl;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+    });
 
     /* ---------------------------------------------------------
        Troca de idioma: fade curto + scroll suave para o topo
