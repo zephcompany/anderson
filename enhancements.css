@@ -90,7 +90,7 @@ html{scroll-behavior:auto!important}
   .step{padding:20px!important;border-radius:18px!important}
   .step h3{font-size:1.15rem!important}
   .step p{font-size:14px!important;line-height:1.5!important}
-  .processo__note{font-size:14px!important;line-height:1.55!important;padding-inline:18px!important}
+  .processo__note{font-size:12.5px!important;line-height:1.5!important;padding-inline:18px!important}
   .processo .marquee{padding-bottom:62px!important}
   .processo .marquee__group{gap:12px!important;padding-inline:18px!important}
   .processo .shot{flex-basis:78vw!important;height:105vw!important;border-radius:18px!important}
