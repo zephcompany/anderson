@@ -589,6 +589,43 @@ h2 em{font-size:1.12em}
 </style>
 <link rel="stylesheet" href="enhancements.css?v=20260907-0344">
 <link rel="stylesheet" href="carousel-fix.css?v=20260907-0344">
+<style id="anderson-responsive-refinements">
+/* Galeria: fotos na proporção original, sem a moldura dos botões. */
+#processo .shot{
+  height:auto!important;
+  aspect-ratio:auto;
+  align-self:flex-start;
+  padding:0;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none;
+}
+#processo .shot img{
+  height:auto!important;
+  border-radius:inherit;
+}
+
+@media(max-width:767px){
+  /* Apenas o vídeo, sem as duas camadas de vinheta. */
+  #topo .az-hero-video-layer::before,
+  #topo .az-hero-video-layer::after{content:none;display:none}
+  #topo .az-hero-video{filter:none}
+  #topo .az-hero-video.is-ready{opacity:.30}
+
+  /* Uma linha para a frase e outra para o trecho em itálico. */
+  #topo .hero__title h1{
+    width:100%;
+    max-width:none!important;
+    font-size:clamp(1.4rem,7.3vw,3rem)!important;
+    line-height:1.08!important;
+    white-space:nowrap;
+  }
+  #topo .hero__title h1 em{display:block}
+
+  /* Reduz o sombreado superior de 120px para 48px. */
+  #processo .processo__hero::before{height:48px}
+}
+</style>
 </head>
 <body>
 
