@@ -606,6 +606,16 @@ h2 em{font-size:1.12em}
 }
 
 @media(max-width:767px){
+  /* Primeira dobra mais baixa para reduzir o recorte do vídeo horizontal. */
+  #topo.hero{
+    min-height:0!important;
+    padding-top:100px!important;
+    padding-bottom:32px!important;
+  }
+  #topo .hero__body{margin-top:24px!important;gap:20px!important}
+  #topo .hero__aside{gap:16px!important}
+  #topo .btn--lg{height:58px!important}
+
   /* Apenas o vídeo, sem as duas camadas de vinheta. */
   #topo .az-hero-video-layer::before,
   #topo .az-hero-video-layer::after{content:none;display:none}
@@ -616,14 +626,43 @@ h2 em{font-size:1.12em}
   #topo .hero__title h1{
     width:100%;
     max-width:none!important;
-    font-size:clamp(1.4rem,7.3vw,3rem)!important;
+    font-size:clamp(1.7rem,9.4vw,3.5rem)!important;
     line-height:1.08!important;
     white-space:nowrap;
   }
   #topo .hero__title h1 em{display:block}
 
+  /* Fotos e prova social sempre lado a lado, inclusive abaixo de 390px. */
+  #topo .proof{flex-direction:row!important;flex-wrap:nowrap!important;gap:12px!important}
+  #topo .proof__avatars{flex-shrink:0}
+  #topo .proof__avatars img{
+    width:32px!important;height:32px!important;
+    min-width:32px!important;max-width:32px!important;flex-basis:32px!important;
+  }
+  #topo .proof__text{min-width:0;max-width:220px!important;text-align:left!important}
+
   /* Reduz o sombreado superior de 120px para 48px. */
   #processo .processo__hero::before{height:48px}
+
+  /* Imagem da CTA no topo, com o texto abaixo e um sombreado na transição. */
+  #contato.cta{
+    background-size:100% auto!important;
+    background-position:center top!important;
+    background-color:#000;
+    padding-block:clamp(180px,48vw,300px) 48px!important;
+  }
+  #contato.cta::before{
+    bottom:auto;
+    height:55.78125vw; /* Proporção da imagem: 2560 × 1428. */
+    opacity:1;
+    background:linear-gradient(to bottom,rgba(0,0,0,.08) 0%,rgba(0,0,0,.12) 38%,rgba(0,0,0,.8) 78%,#000 100%);
+  }
+  #contato.cta h2{
+    max-width:100%!important;
+    font-size:30px!important;
+    line-height:1.08!important;
+    letter-spacing:-.02em!important;
+  }
 }
 </style>
 </head>
