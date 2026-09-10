@@ -78,7 +78,7 @@
       ['.header__cta','Agendar uma demonstração','Schedule a consultation'],
       ['.hero__title h1','Casas que só existem <em>uma vez.</em>','Homes that exist <em>only once.</em>'],
       ['.hero__lead','Arquitetura autoral para quem não quer morar em um projeto repetido. <strong>Do conceito à obra, cada residência nasce de uma ideia nova.</strong>','Signature architecture for those who do not want to live in a repeated design. <strong>From concept to construction, every residence begins with a new idea.</strong>'],
-      ['.hero .btn--lg','<img class="btn__icon" src="assets/btn-icon.svg?v=20260907-0247" alt="" width="39" height="21"> Quero um projeto exclusivo','<img class="btn__icon" src="assets/btn-icon.svg?v=20260907-0247" alt="" width="39" height="21"> I want an exclusive project'],
+      ['.hero .btn--lg','<img class="btn__icon" src="https://zephcompany.github.io/anderson/assets/btn-icon.svg?v=20260907-0247" alt="" width="39" height="21"> Quero um projeto exclusivo','<img class="btn__icon" src="https://zephcompany.github.io/anderson/assets/btn-icon.svg?v=20260907-0247" alt="" width="39" height="21"> I want an exclusive project'],
       ['.proof__text','+ de 50 <strong>Projetos entregues no Brasil e no exterior.</strong>','50+ <strong>Projects delivered in Brazil and abroad.</strong>'],
       ['.ticker .pill:nth-of-type(1)','CONCEITO','CONCEPT'],
       ['.ticker .pill:nth-of-type(2)','PRECISÃO','PRECISION'],
@@ -121,7 +121,7 @@
       ['.cta .eyebrow','// evite prejuízo','// AVOID WASTE'],
       ['.cta h2','Um bom projeto não é custo.<br>É o que <em>evita desperdício</em> na obra e valoriza cada metro construído.','A good design is not a cost.<br>It is what <em>prevents waste</em> during construction and adds value to every built square meter.'],
       ['.cta__note','Contrato claro, com etapas, prazos e entregas definidas por escrito. Você sabe exatamente o que recebe em cada fase.','A clear contract with stages, deadlines and deliverables defined in writing. You know exactly what you receive at every phase.'],
-      ['.cta .btn--lg','<img class="btn__icon" src="assets/btn-icon.svg?v=20260907-0247" alt="" width="39" height="21"> Quero um projeto exclusivo','<img class="btn__icon" src="assets/btn-icon.svg?v=20260907-0247" alt="" width="39" height="21"> I want an exclusive project'],
+      ['.cta .btn--lg','<img class="btn__icon" src="https://zephcompany.github.io/anderson/assets/btn-icon.svg?v=20260907-0247" alt="" width="39" height="21"> Quero um projeto exclusivo','<img class="btn__icon" src="https://zephcompany.github.io/anderson/assets/btn-icon.svg?v=20260907-0247" alt="" width="39" height="21"> I want an exclusive project'],
       ['.faq .eyebrow','// PERGUNTAS FREQUENTES','// FREQUENTLY ASKED QUESTIONS'],
       ['.faq h2','Ainda em <em>dúvida?</em>','Still have <em>questions?</em>'],
       ['.acc:nth-child(1) .acc__head span','Vocês atendem minha cidade?','Do you work in my city?'],
@@ -184,7 +184,10 @@
     const apply=(lang,opts={})=>{
       lang=lang==='en'?'en':'pt';
       document.documentElement.lang=lang==='en'?'en':'pt-BR';
-      copy.forEach(([selector,pt,en])=>setHTML(selector,lang==='en'?en:pt));
+      copy.forEach(([selector,pt,en])=>{
+        if(window.AZ_CMS_PRESENT && selector.startsWith('.card')) return;
+        setHTML(selector,lang==='en'?en:pt);
+      });
       document.querySelectorAll('.link-arrow').forEach(el=>el.innerHTML=lang==='en'?linkArrowEN:linkArrowPT);
       attrs.forEach(([selector,attr,pt,en])=>document.querySelectorAll(selector).forEach(el=>el.setAttribute(attr,lang==='en'?en:pt)));
       document.querySelectorAll('.shot img').forEach((img,i)=>img.alt=lang==='en'?`Signature project ${i+1}`:`Projeto autoral ${i+1}`);

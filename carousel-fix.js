@@ -12,9 +12,9 @@
       .processo__hero::before{content:"";position:absolute;inset:0 0 auto 0;height:clamp(110px,14vw,210px);z-index:2;pointer-events:none;background:linear-gradient(to bottom,#000 0%,rgba(0,0,0,.92) 16%,rgba(0,0,0,.62) 44%,rgba(0,0,0,.22) 72%,rgba(0,0,0,0) 100%)}
       .processo .marquee__track{animation:none!important;display:flex!important;width:max-content!important;will-change:transform!important;transform:translate3d(var(--process-loop-x,0px),0,0)!important}
       .processo .marquee__group,.processo .marquee__group:nth-child(n+2){display:flex!important}
-      .processo .marquee__group .shot:nth-child(n+9){display:none!important}
+      
       .processo .zeph-timeline{display:none!important}
-      @media(max-width:900px){.processo .marquee__group .shot:nth-child(n+7){display:none!important}.processo__hero::before{height:120px}}
+      @media(max-width:900px){.processo__hero::before{height:120px}}
       #topo.hero{position:relative!important;min-height:100svh;overflow:hidden!important;isolation:isolate;background:#000}
       #topo.hero>.wrap{position:relative;z-index:3}
       .az-hero-video-layer{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:#000}
@@ -57,7 +57,7 @@
 
     /* Apenas os dois depoimentos enviados, incorporados diretamente do YouTube */
     const reels=document.querySelector('.depoimentos .reels');
-    if(reels){
+    if(reels&&!window.AZ_CMS_PRESENT){
       const testimonials=[['BzmIQ-gWWmY','Depoimento em vídeo 1'],['pOBo21Intzk','Depoimento em vídeo 2']];
       reels.innerHTML=testimonials.map(([id,title])=>`<li class="glass reel reveal is-in"><iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0&playsinline=1" title="${title}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></li>`).join('');
     }

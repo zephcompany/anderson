@@ -4,31 +4,31 @@
 
   const projects = {
     'rf-house': {
-      titleA:'RF', titleB:'House', location:'Brasília DF', image:'assets/projeto-1.png',
+      titleA:'RF', titleB:'House', location:'Brasília DF', image:'https://zephcompany.github.io/anderson/assets/projeto-1.png',
       tagline:'Com uma fachada surpreendente e espaços generosos para lazer e convivência.',
       description:'Com uma fachada surpreendente e espaços generosos para lazer e convivência, esta residência traduz o equilíbrio perfeito entre luxo, conforto e personalidade.',
-      gallery:['assets/projeto-1.png','assets/galeria-01.png','assets/galeria-02.png','assets/galeria-03.png','assets/galeria-04.png','assets/galeria-05.png','assets/galeria-06.png','assets/galeria-07.png','assets/galeria-08.png'],
+      gallery:['https://zephcompany.github.io/anderson/assets/projeto-1.png','https://zephcompany.github.io/anderson/assets/galeria-01.png','https://zephcompany.github.io/anderson/assets/galeria-02.png','https://zephcompany.github.io/anderson/assets/galeria-03.png','https://zephcompany.github.io/anderson/assets/galeria-04.png','https://zephcompany.github.io/anderson/assets/galeria-05.png','https://zephcompany.github.io/anderson/assets/galeria-06.png','https://zephcompany.github.io/anderson/assets/galeria-07.png','https://zephcompany.github.io/anderson/assets/galeria-08.png'],
       area:'Sob consulta', land:'Residencial', status:'Projeto autoral'
     },
     'marea-house': {
-      titleA:'Marea', titleB:'House', location:'Balneário Camboriú SC', image:'assets/projeto-2.png',
+      titleA:'Marea', titleB:'House', location:'Balneário Camboriú SC', image:'https://zephcompany.github.io/anderson/assets/projeto-2.png',
       tagline:'Arquitetura marcante, ambientes amplos e conexão entre design, natureza e qualidade de vida.',
       description:'Pensada para quem valoriza exclusividade e bem-estar, esta residência traduz a essência do alto padrão por meio de uma arquitetura marcante, ambientes amplos e uma conexão harmoniosa entre design, natureza e qualidade de vida.',
-      gallery:['assets/projeto-2.png','assets/galeria-03.png','assets/galeria-04.png','assets/galeria-05.png','assets/galeria-06.png','assets/galeria-07.png','assets/galeria-08.png','assets/galeria-09.png','assets/galeria-10.png'],
+      gallery:['https://zephcompany.github.io/anderson/assets/projeto-2.png','https://zephcompany.github.io/anderson/assets/galeria-03.png','https://zephcompany.github.io/anderson/assets/galeria-04.png','https://zephcompany.github.io/anderson/assets/galeria-05.png','https://zephcompany.github.io/anderson/assets/galeria-06.png','https://zephcompany.github.io/anderson/assets/galeria-07.png','https://zephcompany.github.io/anderson/assets/galeria-08.png','https://zephcompany.github.io/anderson/assets/galeria-09.png','https://zephcompany.github.io/anderson/assets/galeria-10.png'],
       area:'Sob consulta', land:'Residencial', status:'Projeto autoral'
     },
     'casa-florenca': {
-      titleA:'Casa', titleB:'Florença', location:'Uberlândia MG', image:'assets/projeto-3.png',
+      titleA:'Casa', titleB:'Florença', location:'Uberlândia MG', image:'https://zephcompany.github.io/anderson/assets/projeto-3.png',
       tagline:'Uma fachada de personalidade marcante e linguagem contemporânea.',
       description:'Uma fachada de personalidade marcante e linguagem contemporânea, criada para transformar a identidade do cliente em arquitetura. O terceiro projeto desenvolvido para uma parceria construída com confiança e exclusividade.',
-      gallery:['assets/projeto-3.png','assets/galeria-05.png','assets/galeria-06.png','assets/galeria-07.png','assets/galeria-08.png','assets/galeria-09.png','assets/galeria-10.png','assets/galeria-11.png','assets/galeria-12.png'],
+      gallery:['https://zephcompany.github.io/anderson/assets/projeto-3.png','https://zephcompany.github.io/anderson/assets/galeria-05.png','https://zephcompany.github.io/anderson/assets/galeria-06.png','https://zephcompany.github.io/anderson/assets/galeria-07.png','https://zephcompany.github.io/anderson/assets/galeria-08.png','https://zephcompany.github.io/anderson/assets/galeria-09.png','https://zephcompany.github.io/anderson/assets/galeria-10.png','https://zephcompany.github.io/anderson/assets/galeria-11.png','https://zephcompany.github.io/anderson/assets/galeria-12.png'],
       area:'Sob consulta', land:'Residencial', status:'Projeto autoral'
     },
     'villa-vrabel': {
-      titleA:'Villa', titleB:'Vrabel', location:'Eslováquia', image:'assets/projeto-4.png',
+      titleA:'Villa', titleB:'Vrabel', location:'Eslováquia', image:'https://zephcompany.github.io/anderson/assets/projeto-4.png',
       tagline:'Um projeto internacional que leva a linguagem do estúdio para fora do Brasil.',
       description:'Projeto internacional que leva a linguagem do estúdio para fora do Brasil, com volumes contidos, materiais nobres e uma implantação que responde ao clima e à paisagem local.',
-      gallery:['assets/projeto-4.png','assets/galeria-07.png','assets/galeria-08.png','assets/galeria-09.png','assets/galeria-10.png','assets/galeria-11.png','assets/galeria-12.png','assets/galeria-01.png','assets/galeria-02.png'],
+      gallery:['https://zephcompany.github.io/anderson/assets/projeto-4.png','https://zephcompany.github.io/anderson/assets/galeria-07.png','https://zephcompany.github.io/anderson/assets/galeria-08.png','https://zephcompany.github.io/anderson/assets/galeria-09.png','https://zephcompany.github.io/anderson/assets/galeria-10.png','https://zephcompany.github.io/anderson/assets/galeria-11.png','https://zephcompany.github.io/anderson/assets/galeria-12.png','https://zephcompany.github.io/anderson/assets/galeria-01.png','https://zephcompany.github.io/anderson/assets/galeria-02.png'],
       area:'Sob consulta', land:'Residencial', status:'Projeto internacional'
     }
   };

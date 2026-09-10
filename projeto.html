@@ -100,7 +100,34 @@
   </section>
   <p class="rights">TODOS OS DIREITOS RESERVADOS</p>
 </main>
-<script src="projeto.js?v=20260909-language" defer></script>
-<script src="projeto-interactions.js?v=20260907-0358" defer></script>
+<script type="text/anderson" src="projeto.js?v=20260910-publish" defer></script>
+<script type="text/anderson" src="projeto-interactions.js?v=20260907-0358" defer></script>
+
+<!-- Conteúdo publicado no editor Anderson Zawa. -->
+<script>
+(() => {
+  let recovered = false;
+  async function fallback() {
+    if (window.AZ_CMS_STARTED || recovered) return;
+    recovered = true;
+    window.AZ_CMS_FALLBACK = true;
+    for (const old of document.querySelectorAll('script[type="text/anderson"]')) {
+      await new Promise(resolve => {
+        const script = document.createElement('script');
+        if (old.src) { script.src = old.src; script.onload = script.onerror = resolve; }
+        else script.textContent = old.textContent;
+        document.body.appendChild(script);
+        if (!old.src) resolve();
+      });
+    }
+  }
+  const script = document.createElement('script');
+  script.src = 'cms-runtime.js?v=20260910-publish';
+  script.dataset.cmsApi = 'https://anderson-editor.faeldags2026.chatgpt.site';
+  script.onerror = fallback;
+  document.body.appendChild(script);
+  setTimeout(fallback, 8000);
+})();
+</script>
 </body>
 </html>
