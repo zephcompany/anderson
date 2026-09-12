@@ -665,6 +665,36 @@ h2 em{font-size:1.12em}
 </style>
 <link rel="stylesheet" href="enhancements.css?v=20260907-0344">
 <link rel="stylesheet" href="carousel-fix.css?v=20260907-0344">
+<style id="anderson-mobile-video-framing">
+@media(max-width:767px){
+  /* Reserva o quadro horizontal inteiro acima do título, sem ampliar o vídeo. */
+  #topo.hero{
+    min-height:0!important;
+    padding-top:calc(90px + 56.25vw)!important;
+    padding-bottom:32px!important;
+    align-items:flex-start!important;
+  }
+  #topo .az-hero-video-layer{
+    inset:78px 0 auto!important;
+    height:56.25vw!important;
+  }
+  #topo .az-hero-video{
+    object-fit:contain!important;
+    object-position:center!important;
+    transform:none!important;
+  }
+  #topo .hero__title{gap:0!important}
+
+  /* Transição superior curta; a base mantém contraste para o texto. */
+  #processo .processo__hero::before{
+    height:24px!important;
+    background:linear-gradient(to bottom,#000 0%,rgba(0,0,0,.45) 35%,transparent 100%)!important;
+  }
+  #processo .processo__hero::after{
+    background:linear-gradient(to bottom,transparent 0%,transparent 45%,rgba(0,0,0,.48) 72%,#000 100%)!important;
+  }
+}
+</style>
 </head>
 <body>
 
