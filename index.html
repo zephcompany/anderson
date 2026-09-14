@@ -607,13 +607,8 @@ h2 em{font-size:1.12em}
   #topo .hero__aside{gap:16px!important}
   #topo .btn--lg{height:58px!important}
 
-  /* Sombras curtas apenas nas bordas superior e inferior do vídeo. */
-  #topo .az-hero-video-layer::before{
-    content:"";display:block;position:absolute;inset:0;z-index:2;pointer-events:none;
-    background:
-      linear-gradient(to bottom,rgba(0,0,0,.7),transparent) top / 100% 28px no-repeat,
-      linear-gradient(to top,rgba(0,0,0,.7),transparent) bottom / 100% 36px no-repeat;
-  }
+  /* Apenas o vídeo, sem as duas camadas de vinheta. */
+  #topo .az-hero-video-layer::before,
   #topo .az-hero-video-layer::after{content:none;display:none}
   #topo .az-hero-video{filter:none}
   #topo .az-hero-video.is-ready{opacity:.30}
@@ -675,7 +670,7 @@ h2 em{font-size:1.12em}
   /* Reserva o quadro horizontal inteiro acima do título, sem ampliar o vídeo. */
   #topo.hero{
     min-height:0!important;
-    padding-top:calc(74px + 56.25vw)!important;
+    padding-top:calc(90px + 56.25vw)!important;
     padding-bottom:32px!important;
     align-items:flex-start!important;
   }
@@ -701,6 +696,15 @@ h2 em{font-size:1.12em}
   }
   #processo .processo__hero::after{
     background:linear-gradient(to bottom,transparent 0%,transparent 45%,rgba(0,0,0,.48) 72%,#000 100%)!important;
+  }
+}
+</style>
+<style id="anderson-desktop-content-position">
+@media(min-width:1024px){
+  #topo.hero > .wrap,
+  #contato .cta__content{
+    position:relative;
+    top:32px;
   }
 }
 </style>
