@@ -607,8 +607,13 @@ h2 em{font-size:1.12em}
   #topo .hero__aside{gap:16px!important}
   #topo .btn--lg{height:58px!important}
 
-  /* Apenas o vídeo, sem as duas camadas de vinheta. */
-  #topo .az-hero-video-layer::before,
+  /* Transições curtas até o preto, sem escurecer o centro do vídeo. */
+  #topo .az-hero-video-layer::before{
+    content:"";display:block;position:absolute;inset:0;z-index:2;pointer-events:none;
+    background:
+      linear-gradient(to bottom,#000,transparent) top / 100% 32px no-repeat,
+      linear-gradient(to top,#000,transparent) bottom / 100% 48px no-repeat;
+  }
   #topo .az-hero-video-layer::after{content:none;display:none}
   #topo .az-hero-video{filter:none}
   #topo .az-hero-video.is-ready{opacity:.30}
@@ -667,10 +672,10 @@ h2 em{font-size:1.12em}
 <link rel="stylesheet" href="carousel-fix.css?v=20260907-0344">
 <style id="anderson-mobile-video-framing">
 @media(max-width:767px){
-  /* Reserva o quadro horizontal inteiro acima do título, sem ampliar o vídeo. */
+  /* Mantém o vídeo horizontal e sobrepõe o título à sua borda inferior. */
   #topo.hero{
     min-height:0!important;
-    padding-top:calc(90px + 56.25vw)!important;
+    padding-top:calc(44px + 56.25vw)!important;
     padding-bottom:32px!important;
     align-items:flex-start!important;
   }
